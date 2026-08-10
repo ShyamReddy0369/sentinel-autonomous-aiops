@@ -1,7 +1,10 @@
-import { BrainCircuit, CheckCircle2 } from "lucide-react";
+import { CheckCircle2, BrainCircuit } from "lucide-react";
 import { motion } from "framer-motion";
+import useDiagnosis from "../../hooks/useDiagnosis";
 
 export default function AIBrain() {
+  const diagnosis = useDiagnosis();
+
   return (
     <motion.div
       whileHover={{ scale: 1.01 }}
@@ -11,7 +14,7 @@ export default function AIBrain() {
         <BrainCircuit className="text-cyan-400" size={30} />
 
         <div>
-          <h2 className="text-2xl font-bold">
+          <h2 className="text-2xl font-bold text-white">
             Sentinel AI Brain
           </h2>
 
@@ -29,7 +32,7 @@ export default function AIBrain() {
           </p>
 
           <p className="mt-2 text-lg font-semibold text-red-400">
-            CPU Spike detected in Authentication Service
+            {diagnosis.root_cause}
           </p>
         </div>
 
@@ -39,7 +42,7 @@ export default function AIBrain() {
           </p>
 
           <h3 className="mt-2 text-4xl font-bold text-cyan-400">
-            98%
+            {diagnosis.confidence}%
           </h3>
         </div>
 
@@ -55,8 +58,7 @@ export default function AIBrain() {
             />
 
             <span className="text-slate-300">
-              Restart Authentication Service and
-              monitor CPU usage for 5 minutes.
+              {diagnosis.recommendation}
             </span>
           </div>
         </div>

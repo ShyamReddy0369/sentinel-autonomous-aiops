@@ -1,80 +1,99 @@
-"""
-Diagnosis Agent for Sentinel AI Ops.
+import json
+import os
 
-Analyzes incidents and produces a diagnosis
-containing the probable root cause,
-confidence score, and recommendation.
-"""
-
-from backend.agents.base_agent import BaseAgent
-from backend.chaos_engine.models import Incident
+from groq import Groq
 
 
-class DiagnosisAgent(BaseAgent):
+class DiagnosisAgent:
 
     def __init__(self):
+        api_key = os.getenv("GROQ_API_KEY")
 
-        super().__init__("Diagnosis Agent")
+        if not api_key:
+            raise RuntimeError(
+                "GROQ_API_KEY is missing from .env"
+            )
 
-    def run(self, incident: Incident):
+        self.client = Groq(api_key=api_key)
+
+        self.model = os.getenv(
+            "GROQ_MODEL",
+            "llama-3.1-8b-instant",
+        )
+
+    def diagnose(self, incident):
+        prompt = f"""
+You are an expert Site Reliability Engineer.
+
+Analyze this infrastructure incident.
+
+Service: {incident.service_name}
+Severity: {incident.severity}
+Status: {incident.status}
+Description: {incident.description}
+
+Return ONLY valid JSON in exactly this format:
+
+{{
+    "root_cause": "brief explanation of the likely root cause",
+    "confidence": 0,
+    "recommendation": "specific safe recommendation"
+}}
+
+Rules:
+
+- confidence must be an integer between 0 and 100
+- root_cause must be concise
+- recommendation must be actionable
+- do not include markdown
+- do not include explanations outside the JSON
+"""
+
+        response = self.client.chat.completions.create(
+            model=self.model,
+            messages=[
+                {
+                    "role": "system",
+                    "content": (
+                        "You are Sentinel's autonomous "
+                        "infrastructure diagnosis agent."
+                    ),
+                },
+                {
+                    "role": "user",
+                    "content": prompt,
+                },
+            ],
+            temperature=0.2,
+        )
+
+        content = response.choices[0].message.content
+
+        if not content:
+            raise RuntimeError(
+                "Groq returned an empty diagnosis."
+            )
+
+        content = content.strip()
+
+        # Remove markdown code fences if the model
+        # unexpectedly adds them.
+        if content.startswith("```"):
+            content = content.replace(
+                "```json",
+                "",
+                1,
+            )
+
+            content = content.replace(
+                "```",
+                "",
+            ).strip()
+
+        result = json.loads(content)
 
         return {
-            "agent": self.name,
-            "status": "SUCCESS",
-            "incident_id": incident.incident_id,
-            "service_name": incident.service_name,
-            "severity": incident.severity,
-            "root_cause": self._root_cause(incident),
-            "confidence": self._confidence(incident),
-            "recommendation": self._recommendation(incident),
+            "root_cause": result["root_cause"],
+            "confidence": int(result["confidence"]),
+            "recommendation": result["recommendation"],
         }
-
-    def _root_cause(self, incident: Incident):
-
-        text = incident.description.lower()
-
-        if "cpu" in text:
-            return "High CPU utilization caused by a simulated CPU Spike."
-
-        if "memory" in text:
-            return "Memory Leak detected causing abnormal memory growth."
-
-        if "latency" in text:
-            return "Service latency exceeded acceptable thresholds."
-
-        return "Unknown root cause."
-
-    def _confidence(self, incident: Incident):
-
-        if incident.severity == "CRITICAL":
-            return 98
-
-        if incident.severity == "WARNING":
-            return 90
-
-        return 75
-
-    def _recommendation(self, incident: Incident):
-
-        text = incident.description.lower()
-
-        if "cpu" in text:
-            return (
-                "Investigate CPU-intensive processes and "
-                "consider restarting the affected service."
-            )
-
-        if "memory" in text:
-            return (
-                "Inspect memory allocation and restart the "
-                "service if memory usage continues increasing."
-            )
-
-        if "latency" in text:
-            return (
-                "Check upstream dependencies and network performance."
-            )
-
-        return (
-            "Collect additional telemetry before taking action."
-        )
