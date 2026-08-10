@@ -1,33 +1,85 @@
-"""
-Remediation Agent for Sentinel AI Ops.
+import json
+import os
 
-Simulates the execution of an incident
-response plan.
-"""
-
-from backend.agents.base_agent import BaseAgent
+from groq import Groq
 
 
-class RemediationAgent(BaseAgent):
+class RemediationAgent:
 
     def __init__(self):
+        api_key = os.getenv("GROQ_API_KEY")
 
-        super().__init__("Remediation Agent")
+        if not api_key:
+            raise RuntimeError(
+                "GROQ_API_KEY is missing from .env"
+            )
 
-    def run(self, plan):
+        self.client = Groq(api_key=api_key)
 
-        completed = []
+        self.model = os.getenv(
+            "GROQ_MODEL",
+            "llama-3.1-8b-instant",
+        )
 
-        for step in plan["steps"]:
+    def recommend(self, incident, diagnosis):
+        prompt = f"""
+You are an autonomous Site Reliability Engineering
+remediation agent.
 
-            completed.append({
-                "action": step,
-                "status": "COMPLETED"
-            })
+Incident:
+Service: {incident.service_name}
+Severity: {incident.severity}
+Description: {incident.description}
+
+Diagnosis:
+Root Cause: {diagnosis["root_cause"]}
+Confidence: {diagnosis["confidence"]}
+
+Determine the safest remediation action.
+
+Return ONLY valid JSON:
+
+{{
+  "action": "short action name",
+  "reason": "why this action is appropriate",
+  "risk": "LOW or MEDIUM or HIGH",
+  "requires_approval": true
+}}
+
+Rules:
+- Never recommend destructive actions.
+- Never delete data.
+- Never expose credentials.
+- Critical incidents may require approval.
+"""
+
+        response = self.client.chat.completions.create(
+            model=self.model,
+            messages=[
+                {
+                    "role": "system",
+                    "content": (
+                        "You are a production infrastructure "
+                        "remediation agent. Prioritize safety."
+                    ),
+                },
+                {
+                    "role": "user",
+                    "content": prompt,
+                },
+            ],
+            temperature=0.1,
+        )
+
+        content = response.choices[0].message.content
+
+        result = json.loads(content)
 
         return {
-            "agent": self.name,
-            "status": "SUCCESS",
-            "completed_actions": completed,
-            "summary": f"{len(completed)} remediation actions executed successfully."
+            "action": result["action"],
+            "reason": result["reason"],
+            "risk": result["risk"],
+            "requires_approval": bool(
+                result["requires_approval"]
+            ),
         }

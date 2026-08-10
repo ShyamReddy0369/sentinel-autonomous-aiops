@@ -3,8 +3,11 @@ API routes for Sentinel AI Ops.
 """
 
 from flask import Blueprint, jsonify
-
 from backend.core.services import incident_service
+print("Routes IncidentService ID:", id(incident_service))
+
+print("✅ routes.py loaded")
+
 
 api = Blueprint("api", __name__)
 

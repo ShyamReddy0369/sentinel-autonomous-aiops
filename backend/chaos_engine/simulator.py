@@ -1,187 +1,213 @@
-"""
-Digital Infrastructure Simulator.
-
-This module ties together the telemetry generator,
-fault injector, health engine, incident service,
-and AI agent orchestrator.
-"""
-
-from __future__ import annotations
-
 import random
-import time
 
-from backend.agents.orchestrator import AgentOrchestrator
-from backend.chaos_engine.fault_injector import (
-    CPUSpikeFault,
-    MemoryLeakFault,
-)
-from backend.chaos_engine.health import HealthEngine
-from backend.chaos_engine.incident_service import IncidentService
-from backend.chaos_engine.telemetry import TelemetryGenerator
+from backend.core.services import incident_service
 
 
-SERVICES = [
-    "Authentication Service",
-    "Payment Service",
-    "Inventory Service",
-]
+services = {
+    "Authentication": {
+        "cpu": 35,
+        "memory": 45,
+        "healthy": True,
+        "failure_mode": "CPU",
+    },
+    "Payment": {
+        "cpu": 40,
+        "memory": 50,
+        "healthy": True,
+        "failure_mode": "DATABASE",
+    },
+    "Inventory": {
+        "cpu": 30,
+        "memory": 40,
+        "healthy": True,
+        "failure_mode": "MEMORY",
+    },
+}
 
 
-class Simulator:
+def _keep_cpu_valid(value):
+    return max(0, min(int(value), 100))
 
-    def __init__(self):
 
-        self.health_engine = HealthEngine()
-        self.incident_service = IncidentService()
-        self.orchestrator = AgentOrchestrator()
+def _keep_memory_valid(value):
+    return max(0, min(int(value), 100))
 
-        self.services = {
-            service: TelemetryGenerator()
-            for service in SERVICES
+
+def get_service_metrics():
+
+    result = {}
+
+    for name, service in services.items():
+
+        # Healthy services slowly fluctuate.
+        if service["healthy"]:
+
+            service["cpu"] += random.randint(-3, 3)
+            service["memory"] += random.randint(-2, 2)
+
+            service["cpu"] = _keep_cpu_valid(
+                service["cpu"]
+            )
+
+            service["memory"] = _keep_memory_valid(
+                service["memory"]
+            )
+
+        result[name] = {
+            "cpu": service["cpu"],
+            "memory": service["memory"],
+            "healthy": service["healthy"],
         }
 
-    def run(self, cycles: int = 20):
-
-        for cycle in range(1, cycles + 1):
-
-            print("=" * 70)
-            print(f"Cycle {cycle}")
-
-            for service, telemetry in self.services.items():
-
-                metrics = telemetry.update()
-
-                if random.random() < 0.10:
-
-                    fault = random.choice(
-                        [
-                            CPUSpikeFault(),
-                            MemoryLeakFault(),
-                        ]
-                    )
-
-                    print(f"\n⚠ Injecting {fault.name} into {service}")
-
-                    fault.apply(metrics)
-
-                health = self.health_engine.evaluate(metrics)
-
-                print(f"\n{service}")
-                print(f"CPU        : {metrics.cpu_usage:.1f}%")
-                print(f"Memory     : {metrics.memory_usage:.1f}%")
-                print(f"Latency    : {metrics.latency_ms} ms")
-                print(f"Errors     : {metrics.error_rate:.2f}%")
-                print(f"Health     : {health}")
-
-                # -------------------------
-                # Incident Creation
-                # -------------------------
-
-                if health in ("WARNING", "CRITICAL"):
-
-                    if metrics.cpu_usage >= 60:
-                        description = (
-                            f"CPU utilization exceeded threshold ({metrics.cpu_usage:.1f}%)."
-                        )
-
-                    elif metrics.memory_usage >= 60:
-                        description = f"Memory utilization exceeded threshold ({metrics.memory_usage:.1f}%)."
-
-                    elif metrics.latency_ms >= 120:
-                        description = f"Latency exceeded threshold ({metrics.latency_ms} ms)."
-
-                    elif metrics.error_rate >= 1:
-                        description = f"Error rate exceeded threshold ({metrics.error_rate:.2f}%)."
-
-                    else:
-                        description = f"{service} entered {health} state."
-
-                    incident = self.incident_service.create_incident(
-                        service_name=service,
-                        severity=health,
-                        description=description,
-                    )
-
-                    if incident:
-
-                        print("\n🚨 INCIDENT CREATED")
-                        print(f"ID       : {incident.incident_id}")
-                        print(f"Status   : {incident.status}")
-
-                        report = self.orchestrator.process_incident(
-                            incident
-                        )
-
-                        print("\n================ AI ANALYSIS ================")
-
-                        diagnosis = report["diagnosis"]
-
-                        print("\nROOT CAUSE")
-                        print("-" * 50)
-                        print(diagnosis["root_cause"])
-
-                        print("\nCONFIDENCE")
-                        print("-" * 50)
-                        print(f'{diagnosis["confidence"]}%')
-
-                        print("\nEXECUTION PLAN")
-                        print("-" * 50)
-
-                        for i, step in enumerate(
-                            report["plan"]["steps"],
-                            start=1,
-                        ):
-                            print(f"{i}. {step}")
-
-                        print("\nREMEDIATION")
-                        print("-" * 50)
-
-                        for action in report["remediation"]["completed_actions"]:
-                            print(f"✔ {action['action']}")
-
-                        print("\nSUMMARY")
-                        print("-" * 50)
-                        print(report["remediation"]["summary"])
-
-                # -------------------------
-                # Incident Resolution
-                # -------------------------
-
-                else:
-
-                    incident = self.incident_service.resolve_incident(
-                        service
-                    )
-
-                    if incident:
-
-                        print(
-                            f"\n✅ INCIDENT RESOLVED : "
-                            f"{incident.incident_id}"
-                        )
-
-            print("\n" + "=" * 70)
-            print("ACTIVE INCIDENTS")
-
-            if not self.incident_service.active_incidents:
-
-                print("None")
-
-            else:
-
-                for incident in self.incident_service.active_incidents.values():
-
-                    print(
-                        f"{incident.incident_id} | "
-                        f"{incident.service_name} | "
-                        f"{incident.severity} | "
-                        f"{incident.status}"
-                    )
-
-            time.sleep(1)
+    return result
 
 
-if __name__ == "__main__":
+def get_metrics():
 
-    Simulator().run()
+    service_metrics = get_service_metrics()
+
+    authentication = service_metrics[
+        "Authentication"
+    ]
+
+    payment = service_metrics[
+        "Payment"
+    ]
+
+    inventory = service_metrics[
+        "Inventory"
+    ]
+
+    return {
+        "cpu": authentication["cpu"],
+        "memory": authentication["memory"],
+        "agents": 5,
+        "incidents": len(
+            incident_service.get_open_incidents()
+        ),
+        "services": service_metrics,
+    }
+
+
+def trigger_failure(service_name):
+
+    if service_name not in services:
+
+        return {
+            "success": False,
+            "message": (
+                f"Unknown service: {service_name}"
+            ),
+        }
+
+    service = services[service_name]
+
+    service["healthy"] = False
+
+    if service_name == "Authentication":
+
+        service["cpu"] = 95
+
+        description = (
+            "CPU usage exceeded 90%"
+        )
+
+        severity = "CRITICAL"
+
+    elif service_name == "Payment":
+
+        service["cpu"] = 70
+        service["memory"] = 75
+
+        description = (
+            "Database connection timeout"
+        )
+
+        severity = "HIGH"
+
+    elif service_name == "Inventory":
+
+        service["cpu"] = 60
+        service["memory"] = 92
+
+        description = (
+            "Memory usage high"
+        )
+
+        severity = "MEDIUM"
+
+    else:
+
+        return {
+            "success": False,
+            "message": "Unsupported service.",
+        }
+
+    existing = [
+        incident
+        for incident
+        in incident_service.get_open_incidents()
+        if incident.service_name == service_name
+    ]
+
+    if not existing:
+
+        incident_service.create_incident(
+            service_name=service_name,
+            severity=severity,
+            description=description,
+        )
+
+    return {
+        "success": True,
+        "service_name": service_name,
+        "severity": severity,
+        "description": description,
+        "cpu": service["cpu"],
+        "memory": service["memory"],
+    }
+
+
+def apply_remediation(
+    service_name: str,
+    action: str,
+):
+
+    if service_name not in services:
+
+        return {
+            "success": False,
+            "message": "Unknown service.",
+        }
+
+    service = services[service_name]
+
+    print(
+        f"SIMULATED REMEDIATION: "
+        f"{action} -> {service_name}"
+    )
+
+    service["healthy"] = True
+
+    if service_name == "Authentication":
+
+        service["cpu"] = 65
+        service["memory"] = 45
+
+    elif service_name == "Payment":
+
+        service["cpu"] = 50
+        service["memory"] = 50
+
+    elif service_name == "Inventory":
+
+        service["cpu"] = 45
+        service["memory"] = 45
+
+    return {
+        "success": True,
+        "service_name": service_name,
+        "cpu": service["cpu"],
+        "memory": service["memory"],
+        "status": "HEALTHY",
+    }
