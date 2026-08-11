@@ -10,6 +10,8 @@ from backend.core.services import incident_service
 
 from backend.services.audit_service import audit_service
 
+from backend.api.settings import runtime_settings
+
 
 remediation = Blueprint(
     "remediation",
@@ -71,12 +73,33 @@ def build_remediation(incident):
         actor="AI_REMEDIATION_AGENT",
     )
 
+    # -------------------------------------------------
+    # CONFIDENCE POLICY
+    # -------------------------------------------------
+
+    confidence = diagnosis["confidence"]
+
+    confidence_threshold = runtime_settings[
+        "confidence_threshold"
+    ]
+
+    confidence_requires_approval = (
+        confidence < confidence_threshold
+    )
+
+    requires_approval = (
+        recommendation["requires_approval"]
+        or confidence_requires_approval
+    )
+
+    # -------------------------------------------------
+    # SAFETY VALIDATION
+    # -------------------------------------------------
+
     safety = safety_agent.validate(
         action=recommendation["action"],
         risk=recommendation["risk"],
-        requires_approval=recommendation[
-            "requires_approval"
-        ],
+        requires_approval=requires_approval,
     )
 
     audit_service.log(
@@ -86,7 +109,9 @@ def build_remediation(incident):
         action=recommendation["action"],
         details=(
             f"Status: {safety['status']} | "
-            f"Risk: {recommendation['risk']}"
+            f"Risk: {recommendation['risk']} | "
+            f"Confidence: {confidence}% | "
+            f"Threshold: {confidence_threshold}%"
         ),
         actor="SAFETY_AGENT",
     )
