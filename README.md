@@ -1,9 +1,11 @@
-# Sentinel — Autonomous Incident Commander
+# Sentinel AI Ops
 
-A multi-agent system that detects, diagnoses, and helps resolve production
-incidents in a simulated microservices environment — with full transparency
-into every agent's reasoning and a tunable human-approval boundary for risky
-actions.
+
+
+Enterprise Agentic AI Platform
+for Autonomous Infrastructure Monitoring,
+Incident Detection, Root Cause Analysis,
+and Intelligent Remediation
 
 ## Why this project is different
 
@@ -24,45 +26,287 @@ actions.
 - **Auto-generated blameless postmortems.** A tangible output with real
   engineering-org value, not just a demo artifact.
 
-## Roadmap
 
-- [x] Phase 0 — environment & project scaffold
-- [ ] Phase 1 — Oracle DB schema: tables, procedures, triggers, views
-- [ ] Phase 2 — chaos / simulation engine
-- [ ] Phase 3 — Flask REST API + real-time event stream (SSE)
-- [ ] Phase 4 — multi-agent orchestration (Claude API, mixed model tiers)
-- [ ] Phase 5 — custom "Mission Control" frontend
-- [ ] Phase 6 — Streamlit ops dashboard
-- [ ] Phase 7 — testing, deployment, demo polish
 
-## Stack
+---
 
-Python 3.11+, Flask, Oracle Database (PL/SQL) via `python-oracledb`,
-Anthropic Claude API (Sonnet 5 for hard reasoning, Haiku 4.5 for
-cheap/frequent agent steps), Streamlit, hand-built HTML/CSS/JS frontend,
-Server-Sent Events for live updates.
+# Why Sentinel AI Ops?
 
-## Phase 0 — setup
+Unlike traditional monitoring dashboards or simple chatbot demonstrations, Sentinel AI Ops is designed as a realistic software engineering project.
 
-```bash
-# 1. Create and activate a virtual environment
-python -m venv venv
-source venv/bin/activate        # Windows: venv\Scripts\activate
+### Key Features
 
-# 2. Install dependencies
-pip install -r requirements.txt
+* Simulates real infrastructure telemetry across multiple enterprise services.
+* Injects realistic failures including CPU spikes, memory leaks, and cascading failures.
+* Continuously evaluates system health using a configurable health engine.
+* Automatically creates, tracks, and resolves operational incidents.
+* Provides REST APIs for external applications and dashboards.
+* Uses a repository architecture that supports both in-memory and Oracle persistence.
+* Supports multi-agent AI workflows for diagnosis, planning, remediation, and reporting.
+* Generates operational insights suitable for enterprise incident management.
 
-# 3. Copy the env template (fill in real values in later phases)
-cp .env.example .env
+---
 
-# 4. Run the Flask sanity-check app
-cd backend
-python app.py
+# Architecture
+
+```text
+                 Sentinel AI Ops
+
+                +-------------------+
+                | Infrastructure    |
+                |   Simulator       |
+                +-------------------+
+                          |
+                          v
+                +-------------------+
+                | Telemetry Engine  |
+                +-------------------+
+                          |
+                          v
+                +-------------------+
+                | Health Engine     |
+                +-------------------+
+                          |
+                          v
+                +-------------------+
+                | Incident Service  |
+                +-------------------+
+                          |
+                          v
+                +-------------------+
+                | Repository Layer  |
+                +-------------------+
+                    |           |
+                    |           |
+                    v           v
+             Memory Repository  Oracle Repository
+                    |
+                    v
+                +-------------------+
+                | Flask REST API    |
+                +-------------------+
+                          |
+                          v
+                +-------------------+
+                | AI Agent Layer    |
+                +-------------------+
+                          |
+                          v
+                +-------------------+
+                | Dashboard / UI    |
+                +-------------------+
 ```
 
-Then visit `http://localhost:5000` in a browser — you should see a JSON
-response confirming the backend is alive, plus a `/health` endpoint at
-`http://localhost:5000/health`.
+---
 
-If both load, your environment is good and we're ready for Phase 1
-(database schema).
+# Current Features
+
+## Infrastructure Simulation
+
+* Digital infrastructure simulator
+* Live telemetry generation
+* Multi-service simulation
+* Configurable simulation cycles
+
+## Chaos Engineering
+
+* CPU spike simulation
+* Memory leak simulation
+* Service degradation
+* Fault injection engine
+
+## Health Monitoring
+
+* Health score calculation
+* Healthy / Warning / Critical classification
+* Configurable evaluation logic
+
+## Incident Management
+
+* Automatic incident detection
+* Duplicate prevention
+* Incident lifecycle management
+* Active incident tracking
+* Automatic incident resolution
+
+## Backend Services
+
+* Flask REST API
+* Shared service architecture
+* Repository pattern implementation
+* JSON-based API responses
+
+## Database
+
+* Oracle Database schema
+* PL/SQL procedures
+* Triggers
+* Views
+* Seed data
+* Smoke tests
+
+---
+
+# Technology Stack
+
+## Backend
+
+* Python 3.11+
+* Flask
+
+## Database
+
+* Oracle Database
+* PL/SQL
+* python-oracledb (planned integration)
+
+## AI
+
+* Anthropic Claude API
+* Multi-Agent Architecture
+
+## Frontend
+
+* HTML
+* CSS
+* JavaScript
+* Streamlit
+
+## DevOps
+
+* Git
+* GitHub
+* Docker (planned)
+
+---
+
+# Project Structure
+
+```text
+backend/
+│
+├── agents/
+├── api/
+├── chaos_engine/
+├── core/
+├── repository/
+├── db/
+├── services/
+├── tests/
+│
+database/
+│
+docs/
+```
+
+---
+
+# Current Progress
+
+| Module                 | Status |
+| ---------------------- | :----: |
+| Project Structure      |    ✅   |
+| Telemetry Engine       |    ✅   |
+| Chaos Engine           |    ✅   |
+| Health Engine          |    ✅   |
+| Incident Lifecycle     |    ✅   |
+| Repository Layer       |    ✅   |
+| Flask REST API         |    ✅   |
+| Oracle Database Schema |    ✅   |
+| AI Agent Framework     |   🚧   |
+| Streamlit Dashboard    |   🚧   |
+| Mission Control UI     |   🚧   |
+| Oracle Integration     |   🚧   |
+| Docker Deployment      |   🚧   |
+
+---
+
+# Running the Project
+
+## Clone the Repository
+
+```bash
+git clone https://github.com/<your-username>/Sentinel-incident-commander.git
+cd Sentinel-incident-commander
+```
+
+## Create Virtual Environment
+
+```bash
+python -m venv venv
+```
+
+### Windows
+
+```bash
+venv\Scripts\activate
+```
+
+### Linux / macOS
+
+```bash
+source venv/bin/activate
+```
+
+## Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+## Start the Backend
+
+```bash
+python -m backend.api.app
+```
+
+The backend will start on:
+
+```
+http://127.0.0.1:5000/
+```
+
+Available endpoints:
+
+```
+GET /
+GET /incidents
+GET /incidents/open
+```
+
+---
+
+# Development Roadmap
+
+* ✅ Phase 0 — Project Setup
+* ✅ Phase 1 — Core Infrastructure Simulation
+* ✅ Phase 2 — Health Monitoring & Incident Management
+* 🚧 Phase 3 — Shared Services & Flask API
+* 🚧 Phase 4 — Oracle Database Integration
+* 🚧 Phase 5 — AI Multi-Agent Orchestration
+* 🚧 Phase 6 — Mission Control Dashboard
+* 🚧 Phase 7 — Streamlit Operations Dashboard
+* 🚧 Phase 8 — Docker Deployment & Production Readiness
+
+---
+
+# Future Enhancements
+
+* Root Cause Analysis Agent
+* Intelligent Remediation Agent
+* Incident Summarization Agent
+* Automatic Postmortem Generation
+* Real-time Event Streaming (SSE)
+* Slack / Teams Integration
+* Kubernetes Deployment
+* Grafana Integration
+
+---
+
+# License
+
+This project is developed for educational and portfolio purposes.
+
+---
+
+**Sentinel AI Ops** demonstrates modern software engineering principles including clean architecture, repository pattern, RESTful APIs, chaos engineering, observability, and agentic AI orchestration.
