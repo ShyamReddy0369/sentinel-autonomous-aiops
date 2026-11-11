@@ -33,7 +33,51 @@ def _keep_memory_valid(value):
     return max(0, min(int(value), 100))
 
 
+def sync_anomalies_to_incidents():
+    """
+    Autonomous Anomaly Monitor:
+    Ensure any microservice experiencing critical resource saturation or marked unhealthy
+    has an active open incident in incident_service so AI diagnosis and remediation can execute.
+    """
+    for service_name, service in services.items():
+        is_anomaly = (
+            not service["healthy"]
+            or service["cpu"] >= 90
+            or service["memory"] >= 90
+        )
+
+        if is_anomaly:
+            open_incidents = [
+                inc
+                for inc in incident_service.get_open_incidents()
+                if inc.service_name == service_name
+            ]
+
+            if not open_incidents:
+                # Clear any stale active_incidents reference so create_incident succeeds
+                incident_service.active_incidents.pop(service_name, None)
+
+                if service["cpu"] >= 90 or service_name == "Authentication":
+                    severity = "CRITICAL"
+                    description = f"CPU utilization critical ({service['cpu']}%) in {service_name}"
+                elif service["memory"] >= 90 or service_name == "Inventory":
+                    severity = "CRITICAL"
+                    description = f"Memory pressure critical ({service['memory']}%) in {service_name}"
+                else:
+                    severity = "CRITICAL"
+                    description = f"Database connection pool timeout in {service_name}"
+
+                incident_service.create_incident(
+                    service_name=service_name,
+                    severity=severity,
+                    description=description,
+                )
+
+
 def get_service_metrics():
+
+    # Synchronize any critical resource spikes to active incidents
+    sync_anomalies_to_incidents()
 
     result = {}
 
@@ -168,18 +212,18 @@ def apply_remediation(
 
     if service_name == "Authentication":
 
-        service["cpu"] = 65
-        service["memory"] = 45
+        service["cpu"] = 28
+        service["memory"] = 40
 
     elif service_name == "Payment":
 
-        service["cpu"] = 50
-        service["memory"] = 50
+        service["cpu"] = 32
+        service["memory"] = 42
 
     elif service_name == "Inventory":
 
-        service["cpu"] = 45
-        service["memory"] = 45
+        service["cpu"] = 25
+        service["memory"] = 36
 
     return {
         "success": True,

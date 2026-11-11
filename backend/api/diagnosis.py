@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify
 
 from backend.core.services import incident_service
+from backend.chaos_engine.simulator import sync_anomalies_to_incidents
 
 
 diagnosis = Blueprint("diagnosis", __name__)
@@ -8,6 +9,8 @@ diagnosis = Blueprint("diagnosis", __name__)
 
 @diagnosis.route("/diagnosis")
 def latest_diagnosis():
+
+    sync_anomalies_to_incidents()
 
     incidents = incident_service.get_open_incidents()
 

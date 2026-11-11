@@ -150,15 +150,19 @@ export default function RemediationPanel() {
             </div>
 
             {/* Human in the loop alert */}
-            {remediation.requires_approval && canExecute && (
+            {canExecute && (
               <div className="flex items-start gap-2.5 rounded-lg border border-amber-500/30 bg-amber-500/10 p-2.5">
                 <ShieldAlert size={16} className="mt-0.5 shrink-0 text-amber-400" />
                 <div>
                   <p className="text-[11px] font-semibold text-amber-300">
-                    Human-in-the-Loop Sign-off Required
+                    {remediation.requires_approval
+                      ? "Operator Approval Required to Remediate"
+                      : "Remediation Safety Validated — Operator Trigger Ready"}
                   </p>
                   <p className="mt-0.5 text-[10px] leading-relaxed text-amber-200/80">
-                    Action modifies production infrastructure. Explicit operator authorization required.
+                    {remediation.requires_approval
+                      ? "Action modifies critical infrastructure. Review procedure and grant authorization below to resolve."
+                      : "Automated safeguards confirmed non-destructive. Click below to execute resolution immediately."}
                   </p>
                 </div>
               </div>
@@ -170,17 +174,17 @@ export default function RemediationPanel() {
                 <button
                   onClick={executeRemediation}
                   disabled={executing}
-                  className="flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-emerald-600 px-3 py-2 text-xs font-semibold text-white shadow-md shadow-emerald-950/40 transition hover:bg-emerald-500 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-50"
+                  className="flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-emerald-600 px-4 py-2.5 text-xs font-bold text-white shadow-lg shadow-emerald-950/40 transition hover:bg-emerald-500 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   {executing ? (
                     <>
-                      <Loader2 size={13} className="animate-spin" />
+                      <Loader2 size={14} className="animate-spin" />
                       Executing Mitigation...
                     </>
                   ) : (
                     <>
-                      <Play size={13} />
-                      Approve & Execute Remediation
+                      <Play size={14} />
+                      Approve & Execute Resolution Now
                     </>
                   )}
                 </button>
