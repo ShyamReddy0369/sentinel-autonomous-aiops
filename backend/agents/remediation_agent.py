@@ -46,9 +46,9 @@ class RemediationAgent(BaseAgent):
         if "cpu" in root_cause or "auth" in service.lower():
             return {
                 "action": "restart_service",
-                "reason": f"Recycle {service} instances to clear runaway thread saturation and reset CPU state.",
-                "risk": "LOW",
-                "requires_approval": False,
+                "reason": f"Recycle {service} instances to clear runaway thread saturation and reset CPU state to nominal baseline.",
+                "risk": "HIGH",
+                "requires_approval": True,
             }
         elif "database" in root_cause or "connection" in root_cause or "payment" in service.lower():
             return {

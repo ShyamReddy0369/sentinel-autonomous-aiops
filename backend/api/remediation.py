@@ -4,7 +4,10 @@ from backend.agents.diagnosis_agent import DiagnosisAgent
 from backend.agents.remediation_agent import RemediationAgent
 from backend.agents.safety_agent import SafetyAgent
 
-from backend.chaos_engine.simulator import apply_remediation
+from backend.chaos_engine.simulator import (
+    apply_remediation,
+    sync_anomalies_to_incidents,
+)
 
 from backend.core.services import incident_service
 
@@ -88,8 +91,10 @@ def build_remediation(incident):
     )
 
     requires_approval = (
-        recommendation["requires_approval"]
+        recommendation.get("requires_approval", True)
         or confidence_requires_approval
+        or runtime_settings.get("human_approval", True)
+        or getattr(incident, "severity", "HIGH") in ("CRITICAL", "HIGH")
     )
 
     # -------------------------------------------------
@@ -151,6 +156,8 @@ def build_remediation(incident):
 def latest_remediation():
 
     try:
+        # Guarantee telemetry anomalies are actively mapped to incidents
+        sync_anomalies_to_incidents()
 
         incidents = (
             incident_service

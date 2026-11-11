@@ -8,10 +8,16 @@ import AIBrain from "../components/dashboard/AIBrain";
 import IncidentFeed from "../components/dashboard/IncidentFeed";
 import ActivityFeed from "../components/dashboard/ActivityFeed";
 import AuditTimeline from "../components/dashboard/AuditTimeline";
-import { Radio, FileText, Sparkles, Shield } from "lucide-react";
+import useMetrics from "../hooks/useMetrics";
+import { Radio, FileText, Sparkles, Shield, AlertTriangle } from "lucide-react";
 
 export default function DashboardPage() {
   const [activeTab, setActiveTab] = useState<"stream" | "audit">("stream");
+  const { metrics } = useMetrics();
+
+  const isCritical = Boolean(
+    metrics && (metrics.cpu >= 90 || metrics.incidents > 0)
+  );
 
   return (
     <div className="space-y-4">
@@ -33,12 +39,46 @@ export default function DashboardPage() {
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-xs font-mono font-semibold text-emerald-400">
-            <span className="h-1.5 w-1.5 animate-ping rounded-full bg-emerald-400" />
-            GUARDIAN ACTIVE
+          <span
+            className={`flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-mono font-semibold ${
+              isCritical
+                ? "border-rose-500/40 bg-rose-500/10 text-rose-300"
+                : "border-emerald-500/30 bg-emerald-500/10 text-emerald-400"
+            }`}
+          >
+            <span
+              className={`h-1.5 w-1.5 rounded-full ${
+                isCritical
+                  ? "bg-rose-500 animate-ping"
+                  : "bg-emerald-400 animate-ping"
+              }`}
+            />
+            {isCritical ? "ACTIVE ANOMALY DETECTED" : "GUARDIAN ACTIVE"}
           </span>
         </div>
       </div>
+
+      {/* Critical Anomaly Banner */}
+      {isCritical && (
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-xl border border-rose-500/40 bg-rose-500/10 p-3.5 backdrop-blur-md">
+          <div className="flex items-start gap-3">
+            <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-rose-500/40 bg-rose-500/20 text-rose-300">
+              <AlertTriangle size={15} />
+            </div>
+            <div>
+              <p className="font-mono text-xs font-bold text-rose-200">
+                CRITICAL INFRASTRUCTURE SATURATION DETECTED
+              </p>
+              <p className="text-[11px] text-rose-200/80 mt-0.5">
+                CPU utilization at {Math.round(metrics?.cpu ?? 95)}%. Sentinel AI SRE has formulated remediation. Operator authorization requested below.
+              </p>
+            </div>
+          </div>
+          <span className="shrink-0 self-start sm:self-center rounded-lg border border-rose-500/40 bg-rose-500/20 px-2.5 py-1 font-mono text-[10px] font-bold text-rose-200">
+            AUTHORIZE BELOW ↓
+          </span>
+        </div>
+      )}
 
       {/* KPI Overview Metrics */}
       <MetricsGrid />
