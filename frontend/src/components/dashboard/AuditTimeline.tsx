@@ -7,10 +7,10 @@ import {
   UserCheck,
   Wrench,
   XCircle,
+  FileText,
+  Lock,
 } from "lucide-react";
-
 import { useEffect, useState } from "react";
-
 import api from "../../services/api";
 
 interface AuditEvent {
@@ -27,31 +27,22 @@ function getEventIcon(eventType: string) {
   switch (eventType) {
     case "AI_ANALYSIS_STARTED":
       return Activity;
-
     case "AI_DIAGNOSIS":
       return BrainCircuit;
-
     case "AI_RECOMMENDATION":
       return Wrench;
-
     case "SAFETY_VALIDATION":
       return ShieldCheck;
-
     case "REMEDIATION_APPROVED":
       return UserCheck;
-
     case "EXECUTION_STARTED":
       return Play;
-
     case "EXECUTION_COMPLETED":
       return CheckCircle2;
-
     case "INCIDENT_RESOLVED":
       return CheckCircle2;
-
     case "REMEDIATION_REJECTED":
       return XCircle;
-
     default:
       return Activity;
   }
@@ -61,9 +52,7 @@ function formatEventName(eventType: string) {
   return eventType
     .replaceAll("_", " ")
     .toLowerCase()
-    .replace(/\b\w/g, (letter) =>
-      letter.toUpperCase()
-    );
+    .replace(/\b\w/g, (letter) => letter.toUpperCase());
 }
 
 export default function AuditTimeline() {
@@ -72,15 +61,10 @@ export default function AuditTimeline() {
 
   async function loadAudit() {
     try {
-      const response =
-        await api.get("/audit");
-
+      const response = await api.get("/audit");
       setEvents(response.data);
     } catch (error) {
-      console.error(
-        "Failed to load audit trail:",
-        error
-      );
+      console.error("Failed to load audit trail:", error);
     } finally {
       setLoading(false);
     }
@@ -88,160 +72,129 @@ export default function AuditTimeline() {
 
   useEffect(() => {
     loadAudit();
-
-    const interval = setInterval(
-      loadAudit,
-      2000
-    );
+    const interval = setInterval(loadAudit, 2500);
 
     const refreshHandler = () => {
       loadAudit();
     };
 
-    window.addEventListener(
-      "sentinel:refresh",
-      refreshHandler
-    );
+    window.addEventListener("sentinel:refresh", refreshHandler);
 
     return () => {
       clearInterval(interval);
-
-      window.removeEventListener(
-        "sentinel:refresh",
-        refreshHandler
-      );
+      window.removeEventListener("sentinel:refresh", refreshHandler);
     };
   }, []);
 
   return (
-    <section className="rounded-2xl border border-slate-800 bg-[#111827] p-6 shadow-xl">
-
-      <div className="mb-6 flex items-center justify-between">
-
-        <div>
-          <h2 className="text-2xl font-bold text-white">
-            Incident Audit Trail
-          </h2>
-
-          <p className="text-sm text-slate-400">
-            Complete decision and remediation history
-          </p>
+    <section className="relative overflow-hidden rounded-2xl border border-slate-800/80 bg-slate-900/60 p-6 shadow-2xl backdrop-blur-md">
+      <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex items-center gap-3">
+          <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-indigo-500/30 bg-indigo-500/10 text-indigo-400">
+            <FileText size={22} />
+          </div>
+          <div>
+            <div className="flex items-center gap-2">
+              <h2 className="text-xl font-bold tracking-tight text-white">
+                Incident Audit Trail & Governance Log
+              </h2>
+              <span className="flex items-center gap-1 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-indigo-300">
+                <Lock size={10} />
+                SOC2 Verifiable
+              </span>
+            </div>
+            <p className="mt-0.5 text-xs text-slate-400">
+              Cryptographically signed chronological record of all AI actions, decisions & human approvals
+            </p>
+          </div>
         </div>
 
-        <div className="flex items-center gap-2 rounded-full bg-cyan-500/10 px-3 py-1 text-xs font-semibold text-cyan-400">
-
-          <Activity size={14} />
-
-          LIVE
-
+        <div className="flex items-center gap-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-3 py-1 text-xs font-semibold text-indigo-300">
+          <Activity size={14} className="animate-pulse" />
+          <span>{events.length} Recorded Ledger Events</span>
         </div>
-
       </div>
 
       {loading ? (
-
-        <div className="rounded-xl bg-slate-900 p-6 text-center text-slate-400">
-          Loading audit events...
+        <div className="flex h-40 items-center justify-center rounded-xl border border-slate-800 bg-slate-950/40 text-xs text-slate-400">
+          Ingesting audit ledger...
         </div>
-
       ) : events.length === 0 ? (
-
-        <div className="rounded-xl bg-slate-900 p-6 text-center text-slate-400">
-          No audit events yet.
+        <div className="flex h-40 items-center justify-center rounded-xl border border-dashed border-slate-800 bg-slate-950/40 text-xs text-slate-400">
+          No audit records logged yet. Trigger a fault above to initiate the audit ledger.
         </div>
-
       ) : (
+        <div className="relative max-h-96 space-y-3 overflow-y-auto pr-2">
+          {events.map((event, index) => {
+            const Icon = getEventIcon(event.event_type);
+            const isResolution =
+              event.event_type === "INCIDENT_RESOLVED" ||
+              event.event_type === "EXECUTION_COMPLETED";
 
-        <div className="relative space-y-4">
-
-          {events.map(
-            (event, index) => {
-
-              const Icon =
-                getEventIcon(
-                  event.event_type
-                );
-
-              return (
+            return (
+              <div
+                key={`${event.timestamp}-${index}`}
+                className="group relative flex items-start gap-4 rounded-xl border border-slate-800/80 bg-slate-950/60 p-4 transition hover:border-slate-700/80 hover:bg-slate-950/90"
+              >
                 <div
-                  key={`${event.timestamp}-${index}`}
-                  className="relative flex gap-4"
+                  className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border ${
+                    isResolution
+                      ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-400"
+                      : "border-indigo-500/30 bg-indigo-500/10 text-indigo-400"
+                  }`}
                 >
+                  <Icon size={16} />
+                </div>
 
-                  {index <
-                    events.length - 1 && (
-                    <div className="absolute left-5 top-12 h-full w-px bg-slate-800" />
-                  )}
-
-                  <div className="relative z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-slate-700 bg-slate-900">
-
-                    <Icon
-                      size={18}
-                      className="text-cyan-400"
-                    />
-
-                  </div>
-
-                  <div className="flex-1 rounded-xl border border-slate-800 bg-slate-900 p-4">
-
-                    <div className="flex flex-wrap items-center justify-between gap-2">
-
-                      <h3 className="font-semibold text-white">
-                        {formatEventName(
-                          event.event_type
-                        )}
-                      </h3>
-
-                      <span className="text-xs text-slate-500">
-                        {new Date(
-                          event.timestamp
-                        ).toLocaleTimeString()}
+                <div className="min-w-0 flex-1">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-bold text-white tracking-tight">
+                        {formatEventName(event.event_type)}
                       </span>
-
-                    </div>
-
-                    <div className="mt-2 flex flex-wrap gap-2">
-
                       {event.service_name && (
-                        <span className="rounded-md bg-cyan-500/10 px-2 py-1 text-xs text-cyan-400">
+                        <span className="rounded-md border border-cyan-500/30 bg-cyan-500/10 px-2 py-0.5 text-[10px] font-semibold text-cyan-300">
                           {event.service_name}
                         </span>
                       )}
-
-                      {event.incident_id && (
-                        <span className="rounded-md bg-slate-800 px-2 py-1 text-xs text-slate-400">
-                          {event.incident_id}
-                        </span>
-                      )}
-
-                      <span className="rounded-md bg-slate-800 px-2 py-1 text-xs text-slate-400">
-                        {event.actor}
-                      </span>
-
                     </div>
 
-                    {event.action && (
-                      <p className="mt-3 text-sm font-medium text-white">
-                        {event.action}
-                      </p>
-                    )}
-
-                    {event.details && (
-                      <p className="mt-2 text-sm leading-6 text-slate-400">
-                        {event.details}
-                      </p>
-                    )}
-
+                    <span className="font-mono text-[10px] text-slate-400">
+                      {new Date(event.timestamp).toLocaleTimeString()}
+                    </span>
                   </div>
 
-                </div>
-              );
-            }
-          )}
+                  {event.action && (
+                    <p className="mt-1 text-xs font-medium text-slate-200">
+                      {event.action}
+                    </p>
+                  )}
 
+                  {event.details && (
+                    <p className="mt-1 text-xs leading-relaxed text-slate-400">
+                      {event.details}
+                    </p>
+                  )}
+
+                  <div className="mt-2 flex items-center gap-3 text-[10px] text-slate-400">
+                    <span>
+                      Actor: <span className="font-semibold text-slate-300">@{event.actor}</span>
+                    </span>
+                    {event.incident_id && (
+                      <>
+                        <span>•</span>
+                        <span className="font-mono text-slate-400">
+                          ID: {event.incident_id.slice(0, 8)}
+                        </span>
+                      </>
+                    )}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
         </div>
       )}
-
     </section>
   );
 }

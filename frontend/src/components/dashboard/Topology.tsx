@@ -4,49 +4,90 @@ import {
   Globe,
   Server,
   Layers,
+  ShieldCheck,
+  AlertTriangle,
+  XCircle,
 } from "lucide-react";
-
 import useServiceStatus from "../../hooks/useServiceStatus";
 
 interface ServiceNodeProps {
   name: string;
+  category?: string;
   status: "HEALTHY" | "WARNING" | "CRITICAL";
   icon: React.ElementType;
 }
 
 function ServiceNode({
   name,
+  category,
   status,
   icon: Icon,
 }: ServiceNodeProps) {
   const statusStyles = {
     HEALTHY:
-      "border-emerald-500/40 bg-emerald-500/10 text-emerald-400 shadow-emerald-950/20",
+      "border-emerald-500/30 bg-emerald-950/20 text-emerald-400 hover:border-emerald-500/50 hover:shadow-emerald-950/30",
     WARNING:
-      "border-amber-500/40 bg-amber-500/10 text-amber-400 shadow-amber-950/20",
+      "border-amber-500/40 bg-amber-950/20 text-amber-400 hover:border-amber-500/60 hover:shadow-amber-950/30 animate-pulse",
     CRITICAL:
-      "border-rose-500/40 bg-rose-500/10 text-rose-400 shadow-rose-950/20 animate-pulse",
+      "border-rose-500/50 bg-rose-950/30 text-rose-400 hover:border-rose-500/70 hover:shadow-rose-950/40 animate-pulse ring-1 ring-rose-500/30",
   };
 
   const badgeStyles = {
-    HEALTHY: "bg-emerald-500/20 text-emerald-300",
-    WARNING: "bg-amber-500/20 text-amber-300",
-    CRITICAL: "bg-rose-500/20 text-rose-300",
+    HEALTHY: "bg-emerald-500/10 text-emerald-400 border-emerald-500/30",
+    WARNING: "bg-amber-500/10 text-amber-400 border-amber-500/30",
+    CRITICAL: "bg-rose-500/10 text-rose-300 border-rose-500/30 font-bold",
   };
+
+  const StatusIcon =
+    status === "CRITICAL"
+      ? XCircle
+      : status === "WARNING"
+      ? AlertTriangle
+      : ShieldCheck;
 
   return (
     <div
-      className={`flex min-w-40 flex-col items-center gap-2 rounded-2xl border p-5 shadow-lg transition-all duration-300 hover:scale-105 ${statusStyles[status]}`}
+      className={`group relative flex flex-col items-center justify-between rounded-xl border p-4 shadow-lg transition-all duration-200 ${statusStyles[status]}`}
     >
-      <Icon size={28} />
+      <div className="flex w-full items-center justify-between">
+        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-slate-900/80 border border-slate-800 text-slate-300">
+          <Icon size={18} />
+        </div>
+        <span
+          className={`flex items-center gap-1 rounded-full border px-2 py-0.5 text-[10px] uppercase tracking-wider ${badgeStyles[status]}`}
+        >
+          <StatusIcon size={10} />
+          {status}
+        </span>
+      </div>
 
-      <span className="font-semibold text-white">
-        {name}
-      </span>
+      <div className="my-2 text-center">
+        <h4 className="text-sm font-semibold text-white tracking-tight">
+          {name}
+        </h4>
+        {category && (
+          <p className="text-[11px] text-slate-400">{category}</p>
+        )}
+      </div>
 
-      <span className={`rounded-full px-2.5 py-0.5 text-xs font-bold uppercase tracking-wider ${badgeStyles[status]}`}>
-        {status}
-      </span>
+      <div className="flex items-center gap-1.5 text-[10px] text-slate-400">
+        <span
+          className={`h-1.5 w-1.5 rounded-full ${
+            status === "CRITICAL"
+              ? "bg-rose-500 animate-ping"
+              : status === "WARNING"
+              ? "bg-amber-500"
+              : "bg-emerald-500"
+          }`}
+        />
+        <span>
+          {status === "CRITICAL"
+            ? "Failover Pending"
+            : status === "WARNING"
+            ? "High Load"
+            : "Active & Synced"}
+        </span>
+      </div>
     </div>
   );
 }
@@ -59,87 +100,102 @@ export default function Topology() {
   ): "HEALTHY" | "WARNING" | "CRITICAL" => {
     return (
       services.find(
-        (service) =>
-          service.service_name === serviceName
+        (service) => service.service_name === serviceName
       )?.status ?? "HEALTHY"
     );
   };
 
   const getDatabaseStatus = (): "HEALTHY" | "WARNING" | "CRITICAL" => {
     const paymentStatus = getStatus("Payment");
-    const jobStatus = getStatus("Job Search API");
-    if (paymentStatus === "CRITICAL" || jobStatus === "CRITICAL") return "CRITICAL";
-    if (paymentStatus === "WARNING" || jobStatus === "WARNING") return "WARNING";
+    if (paymentStatus === "CRITICAL") return "CRITICAL";
+    if (paymentStatus === "WARNING") return "WARNING";
     return "HEALTHY";
   };
 
   return (
-    <div className="rounded-2xl border border-slate-800 bg-[#111827] p-6 shadow-xl">
-      <div className="mb-8 flex items-center justify-between">
+    <div className="relative overflow-hidden rounded-2xl border border-slate-800/80 bg-slate-900/60 p-6 shadow-2xl backdrop-blur-md">
+      <div className="pointer-events-none absolute -left-20 -top-20 h-56 w-56 rounded-full bg-cyan-500/5 blur-3xl" />
+
+      <div className="mb-6 flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-white">
-            Infrastructure Topology
-          </h2>
-          <p className="mt-1 text-sm text-slate-400">
-            Real-time microservice dependency & health graph
+          <div className="flex items-center gap-2">
+            <h2 className="text-xl font-bold tracking-tight text-white">
+              Infrastructure Mesh Topology
+            </h2>
+            <span className="rounded-full border border-cyan-500/30 bg-cyan-500/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-cyan-300">
+              Live Topology Graph
+            </span>
+          </div>
+          <p className="mt-0.5 text-xs text-slate-400">
+            Real-time dependency health and autonomous routing mesh
           </p>
         </div>
         <div className="flex items-center gap-2 rounded-full border border-cyan-500/30 bg-cyan-500/10 px-3 py-1 text-xs font-semibold text-cyan-300">
           <Layers size={14} />
-          <span>Autonomous Sync</span>
+          <span>3-Tier Mesh</span>
         </div>
       </div>
 
-      <div className="flex flex-col items-center gap-4">
-        <ServiceNode
-          name="Global Gateway"
-          status="HEALTHY"
-          icon={Globe}
-        />
+      <div className="flex flex-col items-center gap-3">
+        {/* Tier 1: Ingress Layer */}
+        <div className="grid w-full max-w-md grid-cols-2 gap-4">
+          <ServiceNode
+            name="Edge Gateway"
+            category="Cloudflare Ingress"
+            status="HEALTHY"
+            icon={Globe}
+          />
+          <ServiceNode
+            name="Load Balancer"
+            category="Envoy Proxy Cluster"
+            status="HEALTHY"
+            icon={Activity}
+          />
+        </div>
 
-        <div className="h-6 w-0.5 bg-linear-to-b from-slate-600 to-slate-700" />
+        {/* Vector Connector */}
+        <div className="flex items-center gap-1 text-slate-600">
+          <div className="h-4 w-px bg-linear-to-b from-slate-600 to-slate-800" />
+        </div>
 
-        <ServiceNode
-          name="Load Balancer"
-          status="HEALTHY"
-          icon={Activity}
-        />
-
-        <div className="h-6 w-0.5 bg-linear-to-b from-slate-600 to-slate-700" />
-
-        <div className="grid w-full gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {/* Tier 2: Microservices Layer (Strictly 3 Core Services) */}
+        <div className="grid w-full gap-3 sm:grid-cols-3">
           <ServiceNode
             name="Authentication"
+            category="OAuth & Session API"
             status={getStatus("Authentication")}
             icon={Server}
           />
 
           <ServiceNode
             name="Payment"
+            category="Stripe Gateway & Ledger"
             status={getStatus("Payment")}
             icon={Server}
           />
 
           <ServiceNode
             name="Inventory"
+            category="Catalog & Stock Cache"
             status={getStatus("Inventory")}
-            icon={Server}
-          />
-
-          <ServiceNode
-            name="Job Search API"
-            status={getStatus("Job Search API")}
             icon={Server}
           />
         </div>
 
-        <div className="h-6 w-0.5 bg-linear-to-b from-slate-600 to-slate-700" />
+        {/* Vector Connector */}
+        <div className="flex items-center gap-1 text-slate-600">
+          <div className="h-4 w-px bg-linear-to-b from-slate-600 to-slate-800" />
+        </div>
 
-        <ServiceNode
-          name="Oracle Database Cluster"
-          status={getDatabaseStatus()}
-          icon={Database}
-        />
+        {/* Tier 3: Persistence Layer */}
+        <div className="w-full max-w-sm">
+          <ServiceNode
+            name="Primary Oracle Database Cluster"
+            category="Multi-AZ Sharded Cluster"
+            status={getDatabaseStatus()}
+            icon={Database}
+          />
+        </div>
       </div>
     </div>
   );

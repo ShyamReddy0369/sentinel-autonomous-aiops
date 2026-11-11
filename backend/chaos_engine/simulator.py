@@ -22,12 +22,6 @@ services = {
         "healthy": True,
         "failure_mode": "MEMORY",
     },
-    "Job Search API": {
-        "cpu": 40,
-        "memory": 50,
-        "healthy": True,
-        "failure_mode": "DATABASE",
-    },
 }
 
 
@@ -120,14 +114,6 @@ def trigger_failure(service_name):
         description = "Memory usage high"
         severity = "MEDIUM"
 
-    elif service_name == "Job Search API":
-
-        service["cpu"] = 65
-        service["memory"] = 70
-
-        description = "Database connection timeout"
-        severity = "HIGH"
-
     else:
 
         return {
@@ -194,18 +180,6 @@ def apply_remediation(
 
         service["cpu"] = 45
         service["memory"] = 45
-
-    elif service_name == "Job Search API":
-
-        if action == "restart_database":
-
-            service["cpu"] = 40
-            service["memory"] = 50
-
-        else:
-
-            service["cpu"] = 45
-            service["memory"] = 50
 
     return {
         "success": True,
