@@ -6,76 +6,87 @@ export interface ServiceStatus {
   status: "HEALTHY" | "WARNING" | "CRITICAL";
 }
 
+const initialServices: ServiceStatus[] = [
+  { service_name: "Authentication", status: "HEALTHY" },
+  { service_name: "Payment", status: "HEALTHY" },
+  { service_name: "Inventory", status: "HEALTHY" },
+  { service_name: "Job Search API", status: "HEALTHY" },
+];
+
 export default function useServiceStatus() {
-  const [services, setServices] = useState<ServiceStatus[]>([
-    {
-      service_name: "Authentication",
-      status: "HEALTHY",
-    },
-    {
-      service_name: "Payment",
-      status: "HEALTHY",
-    },
-    {
-      service_name: "Inventory",
-      status: "HEALTHY",
-    },
-  ]);
+  const [services, setServices] = useState<ServiceStatus[]>(initialServices);
 
   useEffect(() => {
-    loadServices();
+    let active = true;
 
-    const timer = setInterval(loadServices, 5000);
+    async function loadServices() {
+      try {
+        const response = await api.get("/incidents");
 
-    return () => clearInterval(timer);
-  }, []);
+        const serviceNames = [
+          "Authentication",
+          "Payment",
+          "Inventory",
+          "Job Search API",
+        ];
 
-  async function loadServices() {
-    try {
-      const response = await api.get("/incidents");
+        const updated = serviceNames.map((serviceName) => {
+          const incident = response.data.find(
+            (item: {
+              service_name: string;
+              severity: string;
+              status: string;
+            }) =>
+              item.service_name === serviceName &&
+              item.status === "OPEN"
+          );
 
-      const serviceNames = [
-        "Authentication",
-        "Payment",
-        "Inventory",
-      ];
+          if (!incident) {
+            return {
+              service_name: serviceName,
+              status: "HEALTHY" as const,
+            };
+          }
 
-      const updated = serviceNames.map((serviceName) => {
-        const incident = response.data.find(
-          (item: {
-            service_name: string;
-            severity: string;
-            status: string;
-          }) =>
-            item.service_name === serviceName &&
-            item.status === "OPEN"
-        );
+          if (incident.severity === "CRITICAL") {
+            return {
+              service_name: serviceName,
+              status: "CRITICAL" as const,
+            };
+          }
 
-        if (!incident) {
           return {
             service_name: serviceName,
-            status: "HEALTHY" as const,
+            status: "WARNING" as const,
           };
+        });
+
+        if (active) {
+          setServices(updated);
         }
-
-        if (incident.severity === "CRITICAL") {
-          return {
-            service_name: serviceName,
-            status: "CRITICAL" as const,
-          };
-        }
-
-        return {
-          service_name: serviceName,
-          status: "WARNING" as const,
-        };
-      });
-
-      setServices(updated);
-    } catch (error) {
-      console.error("Failed to fetch service status:", error);
+      } catch (error) {
+        console.error("Failed to fetch service status:", error);
+      }
     }
-  }
+
+    void loadServices();
+
+    const timer = setInterval(() => {
+      void loadServices();
+    }, 3000);
+
+    const refreshHandler = () => {
+      void loadServices();
+    };
+
+    window.addEventListener("sentinel:refresh", refreshHandler);
+
+    return () => {
+      active = false;
+      clearInterval(timer);
+      window.removeEventListener("sentinel:refresh", refreshHandler);
+    };
+  }, []);
 
   return services;
 }

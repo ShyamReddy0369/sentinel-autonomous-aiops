@@ -1,20 +1,24 @@
 from backend.chaos_engine.incident_service import IncidentService
+from backend.chaos_engine.models import Incident
 
-service = IncidentService()
 
-incident = service.create_incident(
-    service_name="Authentication Service",
-    severity="CRITICAL",
-    description="CPU utilization exceeded 95%"
-)
+def test_incident_service_creation() -> None:
+    service: IncidentService = IncidentService()
 
-print("=" * 50)
+    incident: Incident | None = service.create_incident(
+        service_name="Payment Service",
+        severity="HIGH",
+        description="Database connection timeout",
+    )
 
-print("Incident Created")
+    assert incident is not None
+    assert incident.incident_id.startswith("INC-")
+    assert incident.service_name == "Payment Service"
+    assert incident.severity == "HIGH"
+    assert incident.status == "OPEN"
+    assert incident.description == "Database connection timeout"
 
-print(f"ID          : {incident.incident_id}")
-print(f"Service     : {incident.service_name}")
-print(f"Severity    : {incident.severity}")
-print(f"Status      : {incident.status}")
-print(f"Description : {incident.description}")
-print(f"Created At  : {incident.created_at}")
+
+if __name__ == "__main__":
+    test_incident_service_creation()
+    print("Incident service creation test passed.")

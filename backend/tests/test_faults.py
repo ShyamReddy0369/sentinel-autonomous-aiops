@@ -5,35 +5,30 @@ from backend.chaos_engine.fault_injector import (
 )
 from backend.chaos_engine.health import HealthEngine
 
-engine = HealthEngine()
 
-metrics = ServiceMetrics(
-    cpu_usage=30,
-    memory_usage=40,
-    disk_usage=20,
-    latency_ms=40,
-    requests_per_second=120,
-    error_rate=0.2,
-    active_connections=15,
-)
+def test_fault_injection():
+    engine = HealthEngine()
+    metrics = ServiceMetrics(
+        cpu_usage=30,
+        memory_usage=40,
+        disk_usage=20,
+        latency_ms=40,
+        requests_per_second=120,
+        error_rate=0.2,
+        active_connections=15,
+    )
+    assert engine.evaluate(metrics) == "HEALTHY"
 
-print("=" * 60)
-print("Initial State")
-print(metrics)
-print("Health:", engine.evaluate(metrics))
+    cpu_fault = CPUSpikeFault()
+    cpu_fault.apply(metrics)
+    assert metrics.cpu_usage == 55
+    assert metrics.latency_ms == 80
 
-cpu_fault = CPUSpikeFault()
+    memory_fault = MemoryLeakFault()
+    memory_fault.apply(metrics)
+    assert metrics.memory_usage == 52
 
-cpu_fault.apply(metrics)
 
-print("\nAfter CPU Spike")
-print(metrics)
-print("Health:", engine.evaluate(metrics))
-
-memory_fault = MemoryLeakFault()
-
-memory_fault.apply(metrics)
-
-print("\nAfter Memory Leak")
-print(metrics)
-print("Health:", engine.evaluate(metrics))
+if __name__ == "__main__":
+    test_fault_injection()
+    print("Fault injection test passed.")

@@ -1,9 +1,10 @@
-from flask import Blueprint, jsonify, request
+from typing import Any, Dict
+from flask import Blueprint, jsonify, request, Response
 
 from backend.chaos_engine.simulator import (
+    get_metrics,
     trigger_failure,
 )
-
 
 simulation = Blueprint(
     "simulation",
@@ -15,34 +16,27 @@ simulation = Blueprint(
     "/simulation/failure",
     methods=["POST"],
 )
-def simulate_failure():
+def failure() -> tuple[Response, int]:
+    data: Dict[str, Any] = request.get_json(silent=True) or {}
+    service_name: Any = data.get("service_name")
 
-    data = (
-        request.get_json(
-            silent=True
-        )
-        or {}
-    )
-
-    service_name = data.get(
-        "service_name"
-    )
-
-    if not service_name:
-
+    if not service_name or not isinstance(service_name, str):
         return jsonify({
             "success": False,
-            "message": (
-                "service_name is required."
-            ),
+            "message": "service_name is required.",
         }), 400
 
-    result = trigger_failure(
-        service_name
-    )
+    result: Dict[str, Any] = trigger_failure(service_name)
 
-    if not result["success"]:
+    if not result.get("success"):
+        return jsonify(result), 404
 
-        return jsonify(result), 400
+    return jsonify(result), 200
 
-    return jsonify(result)
+
+@simulation.route(
+    "/simulation/metrics",
+    methods=["GET"],
+)
+def metrics() -> Response:
+    return jsonify(get_metrics())

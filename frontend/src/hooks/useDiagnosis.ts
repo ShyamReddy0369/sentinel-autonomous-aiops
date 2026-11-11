@@ -15,17 +15,37 @@ export default function useDiagnosis() {
   });
 
   useEffect(() => {
-    load();
+    let active = true;
 
-    const timer = setInterval(load, 5000);
+    async function fetchDiagnosis() {
+      try {
+        const response = await api.get("/diagnosis");
+        if (active) {
+          setDiagnosis(response.data);
+        }
+      } catch (error) {
+        console.error("Failed to load diagnosis:", error);
+      }
+    }
 
-    return () => clearInterval(timer);
+    void fetchDiagnosis();
+
+    const timer = setInterval(() => {
+      void fetchDiagnosis();
+    }, 3000);
+
+    const refreshHandler = () => {
+      void fetchDiagnosis();
+    };
+
+    window.addEventListener("sentinel:refresh", refreshHandler);
+
+    return () => {
+      active = false;
+      clearInterval(timer);
+      window.removeEventListener("sentinel:refresh", refreshHandler);
+    };
   }, []);
-
-  async function load() {
-    const response = await api.get("/diagnosis");
-    setDiagnosis(response.data);
-  }
 
   return diagnosis;
 }

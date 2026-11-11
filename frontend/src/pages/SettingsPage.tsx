@@ -47,10 +47,6 @@ export default function SettingsPage() {
   const [message, setMessage] =
     useState("");
 
-  useEffect(() => {
-    loadSettings();
-  }, []);
-
   async function loadSettings() {
     try {
       const response =
@@ -70,6 +66,10 @@ export default function SettingsPage() {
       setLoading(false);
     }
   }
+
+  useEffect(() => {
+    loadSettings();
+  }, []);
 
   async function saveSettings() {
     try {

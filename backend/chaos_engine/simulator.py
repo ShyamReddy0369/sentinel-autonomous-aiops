@@ -22,6 +22,12 @@ services = {
         "healthy": True,
         "failure_mode": "MEMORY",
     },
+    "Job Search API": {
+        "cpu": 40,
+        "memory": 50,
+        "healthy": True,
+        "failure_mode": "DATABASE",
+    },
 }
 
 
@@ -39,7 +45,6 @@ def get_service_metrics():
 
     for name, service in services.items():
 
-        # Healthy services slowly fluctuate.
         if service["healthy"]:
 
             service["cpu"] += random.randint(-3, 3)
@@ -66,17 +71,7 @@ def get_metrics():
 
     service_metrics = get_service_metrics()
 
-    authentication = service_metrics[
-        "Authentication"
-    ]
-
-    payment = service_metrics[
-        "Payment"
-    ]
-
-    inventory = service_metrics[
-        "Inventory"
-    ]
+    authentication = service_metrics["Authentication"]
 
     return {
         "cpu": authentication["cpu"],
@@ -95,9 +90,7 @@ def trigger_failure(service_name):
 
         return {
             "success": False,
-            "message": (
-                f"Unknown service: {service_name}"
-            ),
+            "message": f"Unknown service: {service_name}",
         }
 
     service = services[service_name]
@@ -108,10 +101,7 @@ def trigger_failure(service_name):
 
         service["cpu"] = 95
 
-        description = (
-            "CPU usage exceeded 90%"
-        )
-
+        description = "CPU usage exceeded 90%"
         severity = "CRITICAL"
 
     elif service_name == "Payment":
@@ -119,10 +109,7 @@ def trigger_failure(service_name):
         service["cpu"] = 70
         service["memory"] = 75
 
-        description = (
-            "Database connection timeout"
-        )
-
+        description = "Database connection timeout"
         severity = "HIGH"
 
     elif service_name == "Inventory":
@@ -130,11 +117,16 @@ def trigger_failure(service_name):
         service["cpu"] = 60
         service["memory"] = 92
 
-        description = (
-            "Memory usage high"
-        )
-
+        description = "Memory usage high"
         severity = "MEDIUM"
+
+    elif service_name == "Job Search API":
+
+        service["cpu"] = 65
+        service["memory"] = 70
+
+        description = "Database connection timeout"
+        severity = "HIGH"
 
     else:
 
@@ -145,8 +137,7 @@ def trigger_failure(service_name):
 
     existing = [
         incident
-        for incident
-        in incident_service.get_open_incidents()
+        for incident in incident_service.get_open_incidents()
         if incident.service_name == service_name
     ]
 
@@ -203,6 +194,18 @@ def apply_remediation(
 
         service["cpu"] = 45
         service["memory"] = 45
+
+    elif service_name == "Job Search API":
+
+        if action == "restart_database":
+
+            service["cpu"] = 40
+            service["memory"] = 50
+
+        else:
+
+            service["cpu"] = 45
+            service["memory"] = 50
 
     return {
         "success": True,
