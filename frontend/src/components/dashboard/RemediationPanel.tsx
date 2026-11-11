@@ -20,21 +20,21 @@ export default function RemediationPanel() {
 
   if (!remediation) {
     return (
-      <section className="relative overflow-hidden rounded-2xl border border-slate-800/80 bg-slate-900/60 p-6 shadow-2xl backdrop-blur-md">
-        <div className="flex items-center gap-3">
-          <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-purple-500/30 bg-purple-500/10 text-purple-400">
-            <Bot size={22} />
+      <section className="relative overflow-hidden rounded-xl border border-white/[0.06] bg-[#0d121c]/70 p-4.5 backdrop-blur-md">
+        <div className="flex items-center gap-2.5">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-purple-500/30 bg-purple-500/10 text-purple-400">
+            <Bot size={17} />
           </div>
           <div>
-            <h2 className="text-xl font-bold tracking-tight text-white">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-white font-mono">
               AI Incident Remediation
-            </h2>
-            <p className="text-xs text-slate-400">
+            </h3>
+            <p className="text-[11px] text-slate-400">
               Autonomous safety validation & resolution executor
             </p>
           </div>
         </div>
-        <div className="mt-6 flex items-center justify-center rounded-xl border border-slate-800 bg-slate-950/60 p-8 text-xs text-slate-400">
+        <div className="mt-4 flex items-center justify-center rounded-lg border border-white/[0.06] bg-black/40 p-6 text-xs text-slate-400">
           <Loader2 className="mr-2 h-4 w-4 animate-spin text-purple-400" />
           Synchronizing remediation plan...
         </div>
@@ -51,104 +51,99 @@ export default function RemediationPanel() {
 
   const riskColor =
     remediation.risk === "HIGH" || remediation.risk === "CRITICAL"
-      ? "text-rose-400 bg-rose-500/10 border-rose-500/30"
+      ? "text-rose-400"
       : remediation.risk === "MEDIUM"
-      ? "text-amber-400 bg-amber-500/10 border-amber-500/30"
-      : "text-emerald-400 bg-emerald-500/10 border-emerald-500/30";
+      ? "text-amber-400"
+      : "text-emerald-400";
 
   return (
-    <section className="relative flex flex-col justify-between overflow-hidden rounded-2xl border border-slate-800/80 bg-slate-900/60 p-6 shadow-2xl backdrop-blur-md">
-      {/* Background ambient glow */}
-      <div className="pointer-events-none absolute -left-20 -bottom-20 h-56 w-56 rounded-full bg-purple-500/10 blur-3xl" />
-
+    <section className="relative flex flex-col justify-between overflow-hidden rounded-xl border border-white/[0.06] bg-[#0d121c]/70 p-4.5 backdrop-blur-md">
       <div>
-        <div className="mb-6 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-purple-500/30 bg-purple-500/10 text-purple-400 shadow-sm shadow-purple-950/40">
-              <Bot size={22} />
+        <div className="mb-4 flex items-center justify-between">
+          <div className="flex items-center gap-2.5">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-purple-500/30 bg-purple-500/10 text-purple-400">
+              <Bot size={17} />
             </div>
 
             <div>
               <div className="flex items-center gap-2">
-                <h2 className="text-xl font-bold tracking-tight text-white">
-                  AI Remediation Command
-                </h2>
-                <span className="rounded-full border border-purple-500/30 bg-purple-500/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-purple-300">
-                  Execution Safety Gate
+                <h3 className="text-xs font-bold uppercase tracking-wider text-white font-mono">
+                  Remediation Execution Gate
+                </h3>
+                <span className="rounded bg-purple-500/10 px-1.5 py-0.2 text-[9px] font-mono font-semibold text-purple-300 border border-purple-500/20">
+                  GUARDRAILS VERIFIED
                 </span>
               </div>
-              <p className="mt-0.5 text-xs text-slate-400">
+              <p className="text-[11px] text-slate-400">
                 Safety-validated autonomous incident mitigation
               </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-2 rounded-full border border-slate-800 bg-slate-950/80 px-3 py-1 text-xs font-semibold text-slate-300">
+          <div className="flex items-center gap-1.5 rounded-full border border-white/[0.06] bg-black/40 px-2.5 py-0.5 text-[10px] font-mono text-slate-300">
             <span
-              className={`h-2 w-2 rounded-full ${
+              className={`h-1.5 w-1.5 rounded-full ${
                 isExecuted
                   ? "bg-emerald-400"
                   : isIdle
-                  ? "bg-slate-500"
+                  ? "bg-slate-400"
                   : "bg-purple-400 animate-pulse"
               }`}
             />
-            <span className="text-[11px] uppercase tracking-wider">
-              {remediation.status}
-            </span>
+            <span>{remediation.status}</span>
           </div>
         </div>
 
         {isIdle ? (
-          <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-slate-800 bg-slate-950/40 py-10 text-center">
-            <ShieldCheck className="h-10 w-10 text-emerald-400/60 mb-2" />
-            <p className="text-sm font-medium text-slate-300">
+          <div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-white/[0.08] bg-black/30 py-8 text-center">
+            <ShieldCheck className="h-8 w-8 text-emerald-400/70 mb-2" />
+            <p className="text-xs font-semibold text-slate-200">
               No Remediation Required
             </p>
-            <p className="mt-1 text-xs text-slate-400 max-w-xs">
-              System is operating within healthy parameters. Inject chaos above to test the autonomous mitigation loop.
+            <p className="mt-1 text-[11px] text-slate-400 max-w-xs">
+              System is operating within healthy parameters. Trigger chaos above to test the autonomous remediation loop.
             </p>
           </div>
         ) : (
-          <div className="space-y-4">
+          <div className="space-y-3.5">
             {/* Mitigation Action Header */}
             <div>
-              <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">
-                Mitigation Procedure
+              <span className="font-mono text-[10px] uppercase tracking-wider text-slate-400">
+                Target Action Procedure
               </span>
-              <h3 className="mt-1 text-base font-bold text-white tracking-tight">
+              <h4 className="mt-1 text-xs font-bold text-white tracking-tight">
                 {remediation.action}
-              </h3>
-              <p className="mt-1.5 text-xs leading-relaxed text-slate-300">
+              </h4>
+              <p className="mt-1 text-[11px] leading-relaxed text-slate-300">
                 {remediation.reason}
               </p>
             </div>
 
             {/* Risk & Safety Meta Badges */}
-            <div className="grid grid-cols-3 gap-3">
-              <div className="rounded-xl border border-slate-800/80 bg-slate-950/60 p-3 text-center">
-                <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">
+            <div className="grid grid-cols-3 gap-2">
+              <div className="rounded-lg border border-white/[0.06] bg-black/40 p-2.5 text-center">
+                <span className="font-mono text-[9px] uppercase tracking-wider text-slate-400">
                   Risk Tier
                 </span>
-                <p className={`mt-1 text-xs font-bold ${riskColor.split(" ")[0]}`}>
+                <p className={`mt-0.5 font-mono text-xs font-bold ${riskColor}`}>
                   {remediation.risk}
                 </p>
               </div>
 
-              <div className="rounded-xl border border-slate-800/80 bg-slate-950/60 p-3 text-center">
-                <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">
-                  Governance
+              <div className="rounded-lg border border-white/[0.06] bg-black/40 p-2.5 text-center">
+                <span className="font-mono text-[9px] uppercase tracking-wider text-slate-400">
+                  Governance Gate
                 </span>
-                <p className="mt-1 text-xs font-bold text-amber-300">
-                  {remediation.requires_approval ? "HITL REQUIRED" : "AUTO-APPROVED"}
+                <p className="mt-0.5 font-mono text-[10px] font-bold text-amber-300">
+                  {remediation.requires_approval ? "HITL APPROVAL" : "AUTO-PILOT"}
                 </p>
               </div>
 
-              <div className="rounded-xl border border-slate-800/80 bg-slate-950/60 p-3 text-center">
-                <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">
-                  Gate State
+              <div className="rounded-lg border border-white/[0.06] bg-black/40 p-2.5 text-center">
+                <span className="font-mono text-[9px] uppercase tracking-wider text-slate-400">
+                  Execution State
                 </span>
-                <p className="mt-1 text-xs font-bold text-cyan-400">
+                <p className="mt-0.5 font-mono text-[10px] font-bold text-cyan-400">
                   {remediation.status}
                 </p>
               </div>
@@ -156,14 +151,14 @@ export default function RemediationPanel() {
 
             {/* Human in the loop alert */}
             {remediation.requires_approval && canExecute && (
-              <div className="flex items-start gap-3 rounded-xl border border-amber-500/30 bg-amber-500/10 p-3.5">
-                <ShieldAlert size={18} className="mt-0.5 shrink-0 text-amber-400" />
+              <div className="flex items-start gap-2.5 rounded-lg border border-amber-500/30 bg-amber-500/10 p-2.5">
+                <ShieldAlert size={16} className="mt-0.5 shrink-0 text-amber-400" />
                 <div>
-                  <p className="text-xs font-semibold text-amber-300">
-                    Human-in-the-Loop Governance Active
+                  <p className="text-[11px] font-semibold text-amber-300">
+                    Human-in-the-Loop Sign-off Required
                   </p>
-                  <p className="mt-0.5 text-[11px] leading-relaxed text-amber-200/80">
-                    Action involves infrastructure adjustments classified as {remediation.risk} risk. Explicit SRE sign-off requested.
+                  <p className="mt-0.5 text-[10px] leading-relaxed text-amber-200/80">
+                    Action modifies production infrastructure. Explicit operator authorization required.
                   </p>
                 </div>
               </div>
@@ -171,20 +166,20 @@ export default function RemediationPanel() {
 
             {/* Action Buttons */}
             {canExecute && !isExecuted && !isRejected && (
-              <div className="flex gap-3 pt-2">
+              <div className="flex gap-2 pt-1">
                 <button
                   onClick={executeRemediation}
                   disabled={executing}
-                  className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-linear-to-r from-emerald-600 to-teal-600 px-4 py-3 text-xs font-bold text-white shadow-lg shadow-emerald-950/40 transition hover:from-emerald-500 hover:to-teal-500 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-emerald-600 px-3 py-2 text-xs font-semibold text-white shadow-md shadow-emerald-950/40 transition hover:bg-emerald-500 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   {executing ? (
                     <>
-                      <Loader2 size={15} className="animate-spin" />
-                      Executing Remediation...
+                      <Loader2 size={13} className="animate-spin" />
+                      Executing Mitigation...
                     </>
                   ) : (
                     <>
-                      <Play size={15} />
+                      <Play size={13} />
                       Approve & Execute Remediation
                     </>
                   )}
@@ -193,30 +188,30 @@ export default function RemediationPanel() {
                 <button
                   onClick={rejectRemediation}
                   disabled={executing}
-                  className="flex items-center gap-1.5 rounded-xl border border-rose-500/40 bg-rose-500/10 px-4 py-3 text-xs font-semibold text-rose-300 transition hover:bg-rose-500/20 disabled:opacity-50"
+                  className="flex items-center gap-1 rounded-lg border border-rose-500/30 bg-rose-500/10 px-3 py-2 text-xs font-semibold text-rose-300 transition hover:bg-rose-500/20 active:scale-[0.99] disabled:opacity-50"
                 >
-                  <XCircle size={15} />
+                  <XCircle size={13} />
                   Reject
                 </button>
               </div>
             )}
 
             {isExecuted && (
-              <div className="flex items-center gap-2 rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-3.5 text-xs font-medium text-emerald-300">
-                <CheckCircle2 size={16} className="text-emerald-400 shrink-0" />
-                <span>Remediation executed successfully. Microservice restored to nominal baseline.</span>
+              <div className="flex items-center gap-2 rounded-lg border border-emerald-500/30 bg-emerald-500/10 p-2.5 text-xs font-medium text-emerald-300">
+                <CheckCircle2 size={15} className="text-emerald-400 shrink-0" />
+                <span>Remediation completed successfully. Microservice baseline restored.</span>
               </div>
             )}
 
             {isRejected && (
-              <div className="flex items-center gap-2 rounded-xl border border-rose-500/30 bg-rose-500/10 p-3.5 text-xs font-medium text-rose-300">
-                <XCircle size={16} className="text-rose-400 shrink-0" />
-                <span>Remediation plan rejected by engineer. Fallback manual runbook loaded.</span>
+              <div className="flex items-center gap-2 rounded-lg border border-rose-500/30 bg-rose-500/10 p-2.5 text-xs font-medium text-rose-300">
+                <XCircle size={15} className="text-rose-400 shrink-0" />
+                <span>Plan rejected by engineer. Fallback runbook queued.</span>
               </div>
             )}
 
             {message && (
-              <div className="rounded-xl border border-slate-800 bg-slate-950/80 p-3 text-xs text-slate-300">
+              <div className="rounded-lg border border-white/[0.06] bg-black/40 p-2 text-[11px] text-slate-300 font-mono">
                 {message}
               </div>
             )}
@@ -224,9 +219,9 @@ export default function RemediationPanel() {
         )}
       </div>
 
-      <div className="mt-6 flex items-center justify-between border-t border-slate-800/80 pt-4 text-[11px] text-slate-400">
-        <span>Sentinel Safety Guardrails: Active</span>
-        <span>Audit Trail: Immutable</span>
+      <div className="mt-4 flex items-center justify-between border-t border-white/[0.06] pt-3 text-[10px] font-mono text-slate-400">
+        <span>Destructive Safeguards: Active</span>
+        <span>Audit Trail: Signed</span>
       </div>
     </section>
   );

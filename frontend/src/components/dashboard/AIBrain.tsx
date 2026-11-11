@@ -1,4 +1,4 @@
-import { CheckCircle2, BrainCircuit, Sparkles, AlertCircle } from "lucide-react";
+import { CheckCircle2, BrainCircuit, Sparkles, AlertCircle, Cpu } from "lucide-react";
 import useDiagnosis from "../../hooks/useDiagnosis";
 
 export default function AIBrain() {
@@ -6,62 +6,74 @@ export default function AIBrain() {
   const hasIncident = Boolean(diagnosis.root_cause && diagnosis.root_cause !== "None" && diagnosis.confidence > 0);
 
   return (
-    <div className="relative flex flex-col justify-between overflow-hidden rounded-2xl border border-slate-800/80 bg-slate-900/60 p-6 shadow-2xl backdrop-blur-md">
-      {/* Background ambient glow */}
-      <div className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-cyan-500/10 blur-3xl" />
-
+    <div className="relative flex flex-col justify-between overflow-hidden rounded-xl border border-white/[0.06] bg-[#0d121c]/70 p-4.5 backdrop-blur-md">
       <div>
-        <div className="mb-6 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-cyan-500/30 bg-cyan-500/10 text-cyan-400 shadow-sm shadow-cyan-950/40">
-              <BrainCircuit size={22} />
+        <div className="mb-4 flex items-center justify-between">
+          <div className="flex items-center gap-2.5">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-cyan-500/30 bg-cyan-500/10 text-cyan-400">
+              <BrainCircuit size={17} />
             </div>
 
             <div>
               <div className="flex items-center gap-2">
-                <h2 className="text-xl font-bold tracking-tight text-white">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-white font-mono">
                   Sentinel AI Brain
-                </h2>
-                <span className="flex items-center gap-1 rounded-full border border-cyan-500/30 bg-cyan-500/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-cyan-300">
-                  <Sparkles size={11} />
-                  LLM Diagnosis
+                </h3>
+                <span className="flex items-center gap-1 rounded bg-cyan-500/10 px-1.5 py-0.2 text-[9px] font-mono font-semibold text-cyan-300 border border-cyan-500/20">
+                  <Sparkles size={10} />
+                  LLM REASONING
                 </span>
               </div>
-
-              <p className="mt-0.5 text-xs text-slate-400">
-                Autonomous Root Cause Analysis & Inference Engine
+              <p className="text-[11px] text-slate-400">
+                Autonomous Root Cause Analysis & Anomaly Inference
               </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-2 rounded-full border border-slate-800 bg-slate-950/80 px-3 py-1 text-xs font-semibold text-slate-300">
+          <div className="flex items-center gap-1.5 rounded-full border border-white/[0.06] bg-black/40 px-2.5 py-0.5 text-[10px] font-mono text-slate-300">
             <span
-              className={`h-2 w-2 rounded-full ${
+              className={`h-1.5 w-1.5 rounded-full ${
                 hasIncident ? "bg-rose-500 animate-ping" : "bg-emerald-400"
               }`}
             />
-            <span>{hasIncident ? "Incident Active" : "Nominal"}</span>
+            <span>{hasIncident ? "ANOMALY IDENTIFIED" : "SYSTEM NOMINAL"}</span>
           </div>
         </div>
 
-        <div className="space-y-5">
+        {/* Multi-Agent Reasoning Pipeline Bar */}
+        <div className="mb-4 flex items-center justify-between gap-1 rounded-lg border border-white/[0.06] bg-black/30 p-2 text-[10px] font-mono">
+          <div className="flex items-center gap-1 text-cyan-400">
+            <Cpu size={12} />
+            <span>1. Telemetry Ingest</span>
+          </div>
+          <span className="text-slate-400">→</span>
+          <div className={`flex items-center gap-1 ${hasIncident ? "text-amber-300" : "text-slate-400"}`}>
+            <span>2. Gemini Reasoning</span>
+          </div>
+          <span className="text-slate-400">→</span>
+          <div className={`flex items-center gap-1 ${hasIncident ? "text-emerald-400" : "text-slate-400"}`}>
+            <span>3. Policy Validated</span>
+          </div>
+        </div>
+
+        <div className="space-y-3.5">
           {/* Root Cause Card */}
           <div>
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">
+            <span className="font-mono text-[10px] uppercase tracking-wider text-slate-400">
               Inferred Root Cause
             </span>
 
             {hasIncident ? (
-              <div className="mt-2 flex items-start gap-3 rounded-xl border border-rose-500/30 bg-rose-500/10 p-3.5">
+              <div className="mt-1.5 flex items-start gap-2.5 rounded-lg border border-rose-500/30 bg-rose-500/10 p-3">
                 <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-rose-400" />
-                <p className="text-sm font-semibold text-rose-200">
+                <p className="text-xs font-semibold text-rose-200">
                   {diagnosis.root_cause}
                 </p>
               </div>
             ) : (
-              <div className="mt-2 flex items-center gap-2 rounded-xl border border-slate-800 bg-slate-950/50 p-3.5 text-xs text-slate-400">
-                <CheckCircle2 size={15} className="text-emerald-400" />
-                <span>Zero telemetry anomalies detected. All services within threshold bounds.</span>
+              <div className="mt-1.5 flex items-center gap-2 rounded-lg border border-white/[0.06] bg-black/30 p-3 text-xs text-slate-400">
+                <CheckCircle2 size={14} className="text-emerald-400 shrink-0" />
+                <span>Zero telemetry anomalies detected. Microservices within baseline thresholds.</span>
               </div>
             )}
           </div>
@@ -69,7 +81,7 @@ export default function AIBrain() {
           {/* AI Confidence Meter */}
           <div>
             <div className="flex items-center justify-between text-xs">
-              <span className="font-semibold uppercase tracking-wider text-slate-400">
+              <span className="font-mono text-[10px] uppercase tracking-wider text-slate-400">
                 Diagnostic Confidence
               </span>
               <span className="font-mono font-bold text-cyan-400">
@@ -77,7 +89,7 @@ export default function AIBrain() {
               </span>
             </div>
 
-            <div className="mt-2 h-2.5 w-full overflow-hidden rounded-full bg-slate-950/80 border border-slate-800">
+            <div className="mt-1.5 h-1.5 w-full overflow-hidden rounded-full bg-black/60 border border-white/[0.06]">
               <div
                 className="h-full rounded-full bg-linear-to-r from-cyan-500 via-indigo-500 to-emerald-400 transition-all duration-500"
                 style={{ width: `${diagnosis.confidence}%` }}
@@ -87,25 +99,25 @@ export default function AIBrain() {
 
           {/* AI Recommendation */}
           <div>
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">
-              AI Action Recommendation
+            <span className="font-mono text-[10px] uppercase tracking-wider text-slate-400">
+              Prescribed Remediation
             </span>
 
-            <div className="mt-2 flex items-start gap-3 rounded-xl border border-slate-800/80 bg-slate-950/70 p-3.5">
+            <div className="mt-1.5 flex items-start gap-2.5 rounded-lg border border-white/[0.06] bg-black/40 p-3">
               <CheckCircle2
-                className="mt-0.5 h-4 w-4 shrink-0 text-emerald-400"
+                className="mt-0.5 h-3.5 w-3.5 shrink-0 text-emerald-400"
               />
-              <p className="text-xs leading-relaxed text-slate-300">
-                {diagnosis.recommendation || "Monitoring active. Ready to formulate mitigation strategies upon anomaly spike."}
+              <p className="text-[11px] leading-relaxed text-slate-300">
+                {diagnosis.recommendation || "System stable. Standing by to formulate mitigation tactics upon fault detection."}
               </p>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="mt-6 flex items-center justify-between border-t border-slate-800/80 pt-4 text-[11px] text-slate-400">
-        <span>Model: Gemini 2.5 Pro Ops Agent</span>
-        <span className="font-mono">P99 Latency: ~140ms</span>
+      <div className="mt-4 flex items-center justify-between border-t border-white/[0.06] pt-3 text-[10px] font-mono text-slate-400">
+        <span>Model: Gemini 2.5 Ops Agent</span>
+        <span>Inference Latency: ~140ms</span>
       </div>
     </div>
   );

@@ -13,37 +13,37 @@ export default function MetricsGrid() {
 
   if (loading || !metrics) {
     return (
-      <section className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+      <section className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <MetricCard
           title="CPU Usage"
           value="--"
           subtitle="Collecting..."
           icon={Cpu}
-          color="#2563EB"
+          color="#06B6D4"
         />
 
         <MetricCard
-          title="Memory"
+          title="Memory Pressure"
           value="--"
           subtitle="Collecting..."
           icon={Activity}
-          color="#16A34A"
+          color="#10B981"
         />
 
         <MetricCard
-          title="Incidents"
+          title="Active Incidents"
           value="--"
-          subtitle="Loading..."
+          subtitle="Syncing..."
           icon={ShieldAlert}
-          color="#DC2626"
+          color="#EF4444"
         />
 
         <MetricCard
-          title="AI Agents"
+          title="Autonomous Swarm"
           value="--"
-          subtitle="Loading..."
+          subtitle="Syncing..."
           icon={BrainCircuit}
-          color="#7C3AED"
+          color="#8B5CF6"
         />
       </section>
     );
@@ -58,18 +58,18 @@ export default function MetricsGrid() {
     cpu >= 90
       ? "Critical"
       : cpu >= 70
-      ? "Warning"
-      : "Healthy";
+      ? "High Load"
+      : "Nominal";
 
   const memoryStatus =
     memory >= 90
       ? "Critical"
       : memory >= 70
-      ? "Warning"
+      ? "Elevated"
       : "Normal";
 
   return (
-    <section className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+    <section className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
       <MetricCard
         title="CPU Usage"
         value={`${cpu}%`}
@@ -77,49 +77,49 @@ export default function MetricsGrid() {
         icon={Cpu}
         color={
           cpu >= 90
-            ? "#DC2626"
+            ? "#EF4444"
             : cpu >= 70
             ? "#F59E0B"
-            : "#2563EB"
+            : "#06B6D4"
         }
       />
 
       <MetricCard
-        title="Memory"
+        title="Memory Pressure"
         value={`${memory}%`}
         subtitle={memoryStatus}
         icon={Activity}
         color={
           memory >= 90
-            ? "#DC2626"
+            ? "#EF4444"
             : memory >= 70
             ? "#F59E0B"
-            : "#16A34A"
+            : "#10B981"
         }
       />
 
       <MetricCard
-        title="Incidents"
+        title="Active Incidents"
         value={String(incidents)}
         subtitle={
           incidents === 0
-            ? "0 Open"
-            : `${incidents} Open`
+            ? "Zero Open"
+            : `${incidents} Unresolved`
         }
         icon={ShieldAlert}
         color={
           incidents > 0
-            ? "#DC2626"
-            : "#16A34A"
+            ? "#EF4444"
+            : "#10B981"
         }
       />
 
       <MetricCard
-        title="AI Agents"
-        value={String(agents)}
-        subtitle="All Online"
+        title="Autonomous Swarm"
+        value={`${agents} Agents`}
+        subtitle="Consensus Active"
         icon={BrainCircuit}
-        color="#7C3AED"
+        color="#8B5CF6"
       />
     </section>
   );
