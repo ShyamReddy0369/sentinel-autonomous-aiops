@@ -66,104 +66,83 @@ export default function AgentsPanel() {
   }, []);
 
   if (!data) {
-
     return (
-      <section className="rounded-2xl border border-slate-800 bg-[#111827] p-6">
-        <p className="text-slate-400">
-          Loading AI agents...
-        </p>
+      <section className="rounded-xl border border-white/[0.06] bg-[#0d121c]/70 p-4.5 backdrop-blur-md">
+        <p className="font-mono text-xs text-slate-400">Loading AI agent mesh...</p>
       </section>
     );
   }
 
   return (
-    <section className="rounded-2xl border border-slate-800 bg-[#111827] p-6 shadow-xl">
-
-      <div className="mb-6 flex items-center justify-between">
-
+    <section className="rounded-xl border border-white/[0.06] bg-[#0d121c]/70 p-4.5 backdrop-blur-md">
+      <div className="mb-4 flex items-center justify-between">
         <div>
-
-          <h2 className="text-2xl font-bold text-white">
-            Sentinel AI Agents
-          </h2>
-
-          <p className="text-sm text-slate-400">
-            Autonomous operations agents
+          <div className="flex items-center gap-2">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-white font-mono">
+              Sentinel AI Agent Mesh
+            </h3>
+            <span className="rounded bg-cyan-500/10 px-1.5 py-0.2 text-[9px] font-mono font-semibold text-cyan-300 border border-cyan-500/20">
+              AUTONOMOUS SWARM
+            </span>
+          </div>
+          <p className="text-[11px] text-slate-400">
+            Multi-agent consensus architecture for detection, diagnosis, safety validation and execution
           </p>
-
         </div>
 
-        <div className="rounded-full bg-green-500/10 px-3 py-1 text-sm font-semibold text-green-400">
-          {data.online} ONLINE
+        <div className="flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-0.5 text-[10px] font-mono font-semibold text-emerald-400">
+          <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+          <span>{data.online} OF {data.total} ONLINE</span>
         </div>
-
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+        {data.agents.map((agent, index) => {
+          const Icon = icons[index % icons.length];
+          const online = agent.status === "ONLINE";
 
-        {data.agents.map(
-          (agent, index) => {
-
-            const Icon =
-              icons[index % icons.length];
-
-            const online =
-              agent.status === "ONLINE";
-
-            return (
-              <div
-                key={agent.name}
-                className="rounded-xl border border-slate-800 bg-slate-900 p-4 transition hover:border-cyan-500/40"
-              >
-
-                <div className="flex items-start justify-between">
-
-                  <div className="rounded-lg bg-cyan-500/10 p-2">
-
-                    <Icon
-                      size={22}
-                      className="text-cyan-400"
-                    />
-
+          return (
+            <div
+              key={agent.name}
+              className="flex flex-col justify-between rounded-lg border border-white/[0.06] bg-black/40 p-3.5 transition hover:border-cyan-500/40"
+            >
+              <div>
+                <div className="flex items-center justify-between">
+                  <div className="flex h-7 w-7 items-center justify-center rounded-md border border-white/[0.08] bg-white/[0.03] text-cyan-400">
+                    <Icon size={14} />
                   </div>
 
                   <span
-                    className={`flex items-center gap-1 text-xs font-semibold ${
-                      online
-                        ? "text-green-400"
-                        : "text-red-400"
+                    className={`flex items-center gap-1 font-mono text-[9px] font-semibold uppercase ${
+                      online ? "text-emerald-400" : "text-rose-400"
                     }`}
                   >
-
                     <span
-                      className={`h-2 w-2 rounded-full ${
-                        online
-                          ? "bg-green-400"
-                          : "bg-red-400"
+                      className={`h-1.5 w-1.5 rounded-full ${
+                        online ? "bg-emerald-400 animate-pulse" : "bg-rose-400"
                       }`}
                     />
-
                     {agent.status}
-
                   </span>
-
                 </div>
 
-                <h3 className="mt-4 font-semibold text-white">
+                <h4 className="mt-2.5 text-xs font-semibold text-white">
                   {agent.name}
-                </h3>
+                </h4>
 
-                <p className="mt-2 text-xs leading-5 text-slate-500">
+                <p className="mt-1 text-[11px] leading-relaxed text-slate-400">
                   {agent.description}
                 </p>
-
               </div>
-            );
-          }
-        )}
 
+              <div className="mt-3 border-t border-white/[0.06] pt-2 font-mono text-[9px] text-slate-400 flex justify-between">
+                <span>Model: Gemini</span>
+                <span>Latency: 120ms</span>
+              </div>
+            </div>
+          );
+        })}
       </div>
-
     </section>
   );
 }

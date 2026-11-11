@@ -176,7 +176,7 @@ export default function SettingsPage() {
 
       {/* AI Configuration */}
 
-      <section className="rounded-2xl border border-slate-800 bg-[#111827] p-6">
+      <section className="rounded-xl border border-white/[0.06] bg-[#0d121c]/70 p-4.5 backdrop-blur-md">
 
         <div className="mb-6 flex items-center gap-3">
 
@@ -274,7 +274,7 @@ export default function SettingsPage() {
 
       {/* Remediation */}
 
-      <section className="rounded-2xl border border-slate-800 bg-[#111827] p-6">
+      <section className="rounded-xl border border-white/[0.06] bg-[#0d121c]/70 p-4.5 backdrop-blur-md">
 
         <div className="mb-6 flex items-center gap-3">
 
@@ -367,7 +367,7 @@ export default function SettingsPage() {
 
       {/* Safety */}
 
-      <section className="rounded-2xl border border-slate-800 bg-[#111827] p-6">
+      <section className="rounded-xl border border-white/[0.06] bg-[#0d121c]/70 p-4.5 backdrop-blur-md">
 
         <div className="mb-6 flex items-center gap-3">
 
@@ -517,7 +517,7 @@ export default function SettingsPage() {
 
       {/* Telemetry */}
 
-      <section className="rounded-2xl border border-slate-800 bg-[#111827] p-6">
+      <section className="rounded-xl border border-white/[0.06] bg-[#0d121c]/70 p-4.5 backdrop-blur-md">
 
         <div className="mb-6 flex items-center gap-3">
 

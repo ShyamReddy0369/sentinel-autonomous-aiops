@@ -282,61 +282,46 @@ export default function IncidentHistory() {
   }, []);
 
   return (
-    <section className="rounded-2xl border border-slate-800 bg-[#111827] p-6 shadow-xl">
-
-      <div className="mb-6 flex items-center justify-between">
-
+    <section className="rounded-xl border border-white/[0.06] bg-[#0d121c]/70 p-4.5 backdrop-blur-md">
+      <div className="mb-4 flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-white">
-            Incident History
-          </h2>
-
-          <p className="text-sm text-slate-400">
-            Historical infrastructure incidents
+          <div className="flex items-center gap-2">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-white font-mono">
+              Incident History & Postmortem Records
+            </h3>
+            <span className="rounded bg-cyan-500/10 px-1.5 py-0.2 text-[9px] font-mono font-semibold text-cyan-300 border border-cyan-500/20">
+              AUDIT LOG
+            </span>
+          </div>
+          <p className="text-[11px] text-slate-400">
+            Historical incident timelines, root cause analyses, and automated resolution lifecycles
           </p>
         </div>
 
-        <div className="flex items-center gap-2 rounded-full bg-slate-800 px-3 py-1 text-xs text-slate-400">
-
-          <Clock size={14} />
-
-          {incidents.length} Incidents
-
+        <div className="flex items-center gap-1.5 rounded-full border border-white/[0.06] bg-black/40 px-2.5 py-0.5 text-[10px] font-mono text-slate-300">
+          <Clock size={11} />
+          <span>{incidents.length} TOTAL INCIDENTS</span>
         </div>
-
       </div>
 
       {loading ? (
-
-        <div className="rounded-xl bg-slate-900 p-6 text-center text-slate-400">
+        <div className="rounded-lg border border-white/[0.06] bg-black/40 p-6 text-center text-xs font-mono text-slate-400">
           Loading incident history...
         </div>
-
       ) : incidents.length === 0 ? (
-
-        <div className="rounded-xl bg-slate-900 p-6 text-center text-slate-400">
-          No historical incidents.
+        <div className="rounded-lg border border-dashed border-white/[0.08] bg-black/30 p-6 text-center text-xs font-mono text-slate-400">
+          No historical incidents recorded.
         </div>
-
       ) : (
-
-        <div className="space-y-3">
-
+        <div className="space-y-2.5">
           {incidents.map((incident) => {
-
-            const expanded =
-              expandedIncident ===
-              incident.incident_id;
-
-            const events =
-              auditEvents[
-                incident.incident_id
-              ] || [];
+            const expanded = expandedIncident === incident.incident_id;
+            const events = auditEvents[incident.incident_id] || [];
 
             return (
               <div
                 key={incident.incident_id}
-                className="overflow-hidden rounded-xl border border-slate-800 bg-slate-900"
+                className="overflow-hidden rounded-lg border border-white/[0.06] bg-black/40 transition hover:border-white/[0.12]"
               >
 
                 <button
