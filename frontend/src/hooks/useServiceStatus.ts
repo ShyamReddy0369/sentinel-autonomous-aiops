@@ -10,7 +10,6 @@ const initialServices: ServiceStatus[] = [
   { service_name: "Authentication", status: "HEALTHY" },
   { service_name: "Payment", status: "HEALTHY" },
   { service_name: "Inventory", status: "HEALTHY" },
-  { service_name: "Job Search API", status: "HEALTHY" },
 ];
 
 export default function useServiceStatus() {
@@ -27,7 +26,6 @@ export default function useServiceStatus() {
           "Authentication",
           "Payment",
           "Inventory",
-          "Job Search API",
         ];
 
         const updated = serviceNames.map((serviceName) => {
