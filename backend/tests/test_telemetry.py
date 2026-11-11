@@ -1,19 +1,17 @@
-from time import sleep
-
 from backend.chaos_engine.telemetry import TelemetryGenerator
 
-telemetry = TelemetryGenerator()
 
-for _ in range(10):
+def test_telemetry():
+    telemetry = TelemetryGenerator()
     metrics = telemetry.update()
 
-    print("=" * 50)
-    print(f"CPU: {metrics.cpu_usage:.1f}%")
-    print(f"Memory: {metrics.memory_usage:.1f}%")
-    print(f"Disk: {metrics.disk_usage:.1f}%")
-    print(f"Latency: {metrics.latency_ms} ms")
-    print(f"Requests/sec: {metrics.requests_per_second}")
-    print(f"Error Rate: {metrics.error_rate}%")
-    print(f"Connections: {metrics.active_connections}")
+    assert 0 <= metrics.cpu_usage <= 100
+    assert 0 <= metrics.memory_usage <= 100
+    assert 0 <= metrics.disk_usage <= 100
+    assert metrics.requests_per_second >= 0
+    assert metrics.error_rate >= 0
 
-    sleep(1)
+
+if __name__ == "__main__":
+    test_telemetry()
+    print("Telemetry test passed.")

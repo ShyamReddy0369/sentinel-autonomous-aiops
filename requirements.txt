@@ -1,9 +1,11 @@
-# Phase 0 -- core (install these first)
-Flask==3.0.3
-python-dotenv==1.0.1
+# Sentinel AI Ops - Core Dependencies
+Flask>=3.0.0
+flask-cors>=4.0.0
+python-dotenv>=1.0.0
+groq>=0.11.0
+pytest>=8.0.0
+pydantic>=2.0.0
 
-# Added as we build later phases -- uncomment when we get there
-# oracledb==2.4.1        # Phase 1: Oracle DB driver
-# apscheduler==3.10.4    # Phase 2: chaos engine scheduling
-# anthropic==0.34.2      # Phase 4: agent reasoning via Claude API
-# streamlit==1.38.0      # Phase 6: ops dashboard
+# Database & Scheduling (optional / enterprise phase)
+oracledb>=2.4.1
+apscheduler>=3.10.4

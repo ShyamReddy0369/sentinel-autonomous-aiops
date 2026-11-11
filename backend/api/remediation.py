@@ -128,10 +128,21 @@ def build_remediation(incident):
         "status": safety["status"],
     }
 
+    # Keep useful AI information in the response
+    result["confidence"] = confidence
+    result["confidence_threshold"] = confidence_threshold
+    result["autonomous_remediation"] = runtime_settings[
+        "autonomous_remediation"
+    ]
+
     remediation_cache[incident_id] = result
 
     return result
 
+
+# =================================================
+# GET LATEST / HIGHEST PRIORITY REMEDIATION
+# =================================================
 
 @remediation.route(
     "/remediation",
@@ -192,6 +203,66 @@ def latest_remediation():
             "message": str(error),
         }), 500
 
+
+# =================================================
+# GET REMEDIATION FOR SPECIFIC INCIDENT
+# =================================================
+
+@remediation.route(
+    "/remediation/<incident_id>",
+    methods=["GET"],
+)
+def remediation_for_incident(incident_id):
+
+    try:
+
+        incidents = (
+            incident_service
+            .get_open_incidents()
+        )
+
+        incident = next(
+            (
+                item
+                for item in incidents
+                if item.incident_id == incident_id
+            ),
+            None,
+        )
+
+        if incident is None:
+
+            return jsonify({
+                "status": "ERROR",
+                "message": (
+                    "Incident not found "
+                    "or already resolved."
+                ),
+            }), 404
+
+        result = build_remediation(
+            incident
+        )
+
+        return jsonify(result)
+
+    except Exception as error:
+
+        print(
+            "INCIDENT REMEDIATION ERROR:",
+            type(error).__name__,
+            str(error),
+        )
+
+        return jsonify({
+            "error": type(error).__name__,
+            "message": str(error),
+        }), 500
+
+
+# =================================================
+# EXECUTE REMEDIATION
+# =================================================
 
 @remediation.route(
     "/remediation/execute",
@@ -355,6 +426,10 @@ def execute_remediation():
         "incident_status": "RESOLVED",
     })
 
+
+# =================================================
+# REJECT REMEDIATION
+# =================================================
 
 @remediation.route(
     "/remediation/reject",
