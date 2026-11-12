@@ -22,15 +22,15 @@ export default function MetricCard({
     <div
       className={`group relative overflow-hidden rounded-xl border p-4 backdrop-blur-xl transition-all duration-300 ${
         isAlert
-          ? "border-rose-500/60 bg-gradient-to-b from-rose-950/40 to-black/70 shadow-[0_0_25px_rgba(255,0,85,0.25)]"
+          ? "border-rose-500/60 bg-linear-to-b from-rose-950/40 to-black/70 shadow-[0_0_25px_rgba(255,0,85,0.25)]"
           : isWarning
-          ? "border-amber-500/50 bg-gradient-to-b from-amber-950/40 to-black/70 shadow-[0_0_25px_rgba(255,184,0,0.2)]"
-          : "border-cyan-500/20 bg-gradient-to-b from-[#060e22]/80 to-black/70 hover:border-cyan-400/50 hover:shadow-[0_0_25px_rgba(0,240,255,0.2)]"
+          ? "border-amber-500/50 bg-linear-to-b from-amber-950/40 to-black/70 shadow-[0_0_25px_rgba(255,184,0,0.2)]"
+          : "border-cyan-500/20 bg-linear-to-b from-[#060e22]/80 to-black/70 hover:border-cyan-400/50 hover:shadow-[0_0_25px_rgba(0,240,255,0.2)]"
       }`}
     >
       {/* Top micro laser line */}
       <div
-        className="absolute inset-x-0 top-0 h-[2px] transition-all duration-300"
+        className="absolute inset-x-0 top-0 h-0.5 transition-all duration-300"
         style={{
           backgroundColor: color,
           boxShadow: `0 0 10px ${color}`,

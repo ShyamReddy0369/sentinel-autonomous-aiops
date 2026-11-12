@@ -23,7 +23,7 @@ export default function App() {
           <div className="space-y-4">
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="text-2xl font-black tracking-tight sm:text-3xl font-mono text-transparent bg-clip-text bg-gradient-to-r from-white via-cyan-100 to-cyan-400">
+                <h1 className="text-2xl font-black tracking-tight sm:text-3xl font-mono text-transparent bg-clip-text bg-linear-to-r from-white via-cyan-100 to-cyan-400">
                   INCIDENT MANAGEMENT
                 </h1>
                 <span className="flex items-center gap-1 rounded border border-cyan-500/40 bg-cyan-950/50 px-2 py-0.5 text-[10px] font-mono font-bold text-cyan-300">
@@ -45,7 +45,7 @@ export default function App() {
           <div className="space-y-4">
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="text-2xl font-black tracking-tight sm:text-3xl font-mono text-transparent bg-clip-text bg-gradient-to-r from-white via-purple-100 to-purple-400">
+                <h1 className="text-2xl font-black tracking-tight sm:text-3xl font-mono text-transparent bg-clip-text bg-linear-to-r from-white via-purple-100 to-purple-400">
                   SENTINEL AI BRAIN
                 </h1>
                 <span className="flex items-center gap-1 rounded border border-purple-500/40 bg-purple-950/50 px-2 py-0.5 text-[10px] font-mono font-bold text-purple-300">
@@ -67,7 +67,7 @@ export default function App() {
           <div className="space-y-4">
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="text-2xl font-black tracking-tight sm:text-3xl font-mono text-transparent bg-clip-text bg-gradient-to-r from-white via-cyan-100 to-cyan-400">
+                <h1 className="text-2xl font-black tracking-tight sm:text-3xl font-mono text-transparent bg-clip-text bg-linear-to-r from-white via-cyan-100 to-cyan-400">
                   INFRASTRUCTURE TOPOLOGY
                 </h1>
                 <span className="flex items-center gap-1 rounded border border-cyan-500/40 bg-cyan-950/50 px-2 py-0.5 text-[10px] font-mono font-bold text-cyan-300">

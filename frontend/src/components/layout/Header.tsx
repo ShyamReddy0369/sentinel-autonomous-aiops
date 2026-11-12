@@ -22,7 +22,7 @@ export default function Header() {
   return (
     <header className="relative flex h-14 shrink-0 items-center justify-between border-b border-cyan-500/20 bg-[#040814]/85 px-6 backdrop-blur-xl">
       {/* Top micro neon laser line */}
-      <div className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-cyan-400/80 to-transparent shadow-[0_0_8px_rgba(0,240,255,0.8)]" />
+      <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-cyan-400/80 to-transparent shadow-[0_0_8px_rgba(0,240,255,0.8)]" />
 
       {/* Cyber Breadcrumb path */}
       <div className="flex items-center gap-2 text-xs font-mono">
@@ -46,10 +46,10 @@ export default function Header() {
         <button
           onClick={triggerQuickChaos}
           disabled={injecting}
-          className="group relative flex items-center gap-1.5 overflow-hidden rounded-lg border border-rose-500/40 bg-gradient-to-r from-rose-950/40 to-red-900/30 px-3 py-1 text-xs font-medium text-rose-200 transition-all duration-200 hover:border-rose-400 hover:shadow-[0_0_18px_rgba(255,0,85,0.4)] active:scale-95 disabled:opacity-50"
+          className="group relative flex items-center gap-1.5 overflow-hidden rounded-lg border border-rose-500/40 bg-linear-to-r from-rose-950/40 to-red-900/30 px-3 py-1 text-xs font-medium text-rose-200 transition-all duration-200 hover:border-rose-400 hover:shadow-[0_0_18px_rgba(255,0,85,0.4)] active:scale-95 disabled:opacity-50"
           title="Quick fault injection for demo"
         >
-          <div className="absolute inset-0 bg-gradient-to-r from-rose-500/0 via-rose-500/10 to-rose-500/0 opacity-0 group-hover:opacity-100 transition-opacity" />
+          <div className="absolute inset-0 bg-linear-to-r from-rose-500/0 via-rose-500/10 to-rose-500/0 opacity-0 group-hover:opacity-100 transition-opacity" />
           {injecting ? (
             <RefreshCw size={12} className="animate-spin text-rose-400" />
           ) : (
