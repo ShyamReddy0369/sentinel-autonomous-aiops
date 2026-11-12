@@ -1,7 +1,6 @@
 # 🛡️ Sentinel AI Ops
 ### **Autonomous Infrastructure Monitoring, Chaos Engineering & Intelligent Incident Remediation**
 
-[![Zeta Innovate](https://img.shields.io/badge/Zeta_Innovate-Top_200_Finalist-FF4B4B?style=for-the-badge&logo=target&logoColor=white)](https://github.com)
 [![Python](https://img.shields.io/badge/Python-3.11+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
 [![React](https://img.shields.io/badge/React-19.0-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev)
 [![Vite](https://img.shields.io/badge/Vite-6.0-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev)
@@ -390,9 +389,9 @@ Our repository follows a strict multi-tier branch promotion workflow governed by
 
 ---
 
-## 🏆 Presentation & Live Demo Structure (Zeta Innovate Top 200)
+## 🏆 Presentation & Live Demo Structure
 
-For judges and evaluators reviewing the live demonstration:
+For evaluators and reviewers examining the live demonstration:
 
 - **0:00 - 1:30 | The Hook**: The 3:00 AM PagerDuty nightmare — why alert fatigue and manual runbooks cost enterprises millions.
 - **1:30 - 3:00 | Architecture**: How Sentinel decouples telemetry ingestion, chaos injection, multi-agent reasoning, and human-in-the-loop governance.
@@ -413,5 +412,5 @@ This project is licensed under the **MIT License** — see the [LICENSE](LICENSE
 ---
 
 <p align="center">
-  <b>Built with ❤️ by the Sentinel AI Ops Team for Zeta Innovate 2026.</b>
+  <b>Built with ❤️ by the Sentinel AI Ops Team.</b>
 </p>
