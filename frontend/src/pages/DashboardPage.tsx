@@ -85,10 +85,13 @@ export default function DashboardPage() {
       {/* KPI Overview Metrics */}
       <MetricsGrid />
 
+      {/* Hero Real-Time Telemetry HUD Stream */}
+      <TelemetryChart />
+
       {/* Interactive Chaos Injection Deck */}
       <ChaosControls />
 
-      {/* Mission Critical 2-Column Split: AI Commander vs Live Mesh Observability */}
+      {/* Mission Critical 2-Column Split: AI Commander vs Live Mesh Architecture */}
       <div className="grid gap-4 lg:grid-cols-2">
         {/* Column 1: AI Incident Commander & Remediation Action */}
         <div className="space-y-4">
@@ -96,10 +99,9 @@ export default function DashboardPage() {
           <RemediationPanel />
         </div>
 
-        {/* Column 2: Live Observability Mesh & Telemetry Graphs */}
+        {/* Column 2: Live Observability Mesh & Topology */}
         <div className="space-y-4">
           <Topology />
-          <TelemetryChart />
         </div>
       </div>
 
@@ -122,7 +124,7 @@ export default function DashboardPage() {
               onClick={() => setActiveTab("stream")}
               className={`flex items-center gap-1.5 rounded-md px-3 py-1 text-xs font-mono font-medium transition-all ${
                 activeTab === "stream"
-                  ? "border border-cyan-500/50 bg-cyan-500/15 text-cyan-200 shadow-[0_0_12px_rgba(0,240,255,0.25)]"
+                  ? "border border-cyan-500/50 bg-cyan-500/20 text-cyan-200 shadow-[0_0_12px_rgba(0,240,255,0.25)]"
                   : "text-slate-400 hover:text-cyan-300"
               }`}
             >
@@ -134,7 +136,7 @@ export default function DashboardPage() {
               onClick={() => setActiveTab("audit")}
               className={`flex items-center gap-1.5 rounded-md px-3 py-1 text-xs font-mono font-medium transition-all ${
                 activeTab === "audit"
-                  ? "border border-purple-500/50 bg-purple-500/15 text-purple-200 shadow-[0_0_12px_rgba(168,85,247,0.25)]"
+                  ? "border border-purple-500/50 bg-purple-500/20 text-purple-200 shadow-[0_0_12px_rgba(168,85,247,0.25)]"
                   : "text-slate-400 hover:text-purple-300"
               }`}
             >
