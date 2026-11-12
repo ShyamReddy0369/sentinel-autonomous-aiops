@@ -27,7 +27,7 @@ export default function RemediationPanel() {
             <Bot size={17} />
           </div>
           <div>
-            <h3 className="text-xs font-black uppercase tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-white to-purple-300 font-mono">
+            <h3 className="text-xs font-black uppercase tracking-wider text-transparent bg-clip-text bg-linear-to-r from-white to-purple-300 font-mono">
               AI Incident Remediation
             </h3>
             <p className="text-[11px] font-mono text-cyan-500/70">
@@ -58,7 +58,7 @@ export default function RemediationPanel() {
       : "text-emerald-400 drop-shadow-[0_0_6px_rgba(0,255,157,0.8)]";
 
   return (
-    <section className="relative flex flex-col justify-between overflow-hidden rounded-xl border border-cyan-500/25 bg-gradient-to-b from-[#060e22]/90 to-black/80 p-4.5 backdrop-blur-xl shadow-[0_4px_24px_-1px_rgba(0,0,0,0.6)]">
+    <section className="relative flex flex-col justify-between overflow-hidden rounded-xl border border-cyan-500/25 bg-linear-to-b from-[#060e22]/90 to-black/80 p-4.5 backdrop-blur-xl shadow-[0_4px_24px_-1px_rgba(0,0,0,0.6)]">
       <div>
         <div className="mb-4 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
@@ -68,7 +68,7 @@ export default function RemediationPanel() {
 
             <div>
               <div className="flex items-center gap-2">
-                <h3 className="text-xs font-black uppercase tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-white via-purple-200 to-purple-400 font-mono">
+                <h3 className="text-xs font-black uppercase tracking-wider text-transparent bg-clip-text bg-linear-to-r from-white via-purple-200 to-purple-400 font-mono">
                   Remediation Execution Gate
                 </h3>
                 <span className="rounded border border-purple-500/40 bg-purple-950/40 px-1.5 py-0.2 text-[9px] font-mono font-bold text-purple-300 shadow-[0_0_8px_rgba(168,85,247,0.25)]">
@@ -153,7 +153,7 @@ export default function RemediationPanel() {
 
             {/* Human in the loop alert */}
             {canExecute && (
-              <div className="flex items-start gap-2.5 rounded-lg border border-amber-500/50 bg-gradient-to-r from-amber-950/40 to-black/60 p-3 shadow-[0_0_15px_rgba(255,184,0,0.2)]">
+              <div className="flex items-start gap-2.5 rounded-lg border border-amber-500/50 bg-linear-to-r from-amber-950/40 to-black/60 p-3 shadow-[0_0_15px_rgba(255,184,0,0.2)]">
                 <ShieldAlert size={16} className="mt-0.5 shrink-0 text-amber-400 drop-shadow-[0_0_6px_rgba(255,184,0,0.8)]" />
                 <div>
                   <p className="text-[11px] font-bold font-mono text-amber-300">
@@ -176,7 +176,7 @@ export default function RemediationPanel() {
                 <button
                   onClick={executeRemediation}
                   disabled={executing}
-                  className="group relative flex flex-1 items-center justify-center gap-1.5 overflow-hidden rounded-lg bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 px-4 py-2.5 text-xs font-mono font-bold text-black shadow-[0_0_25px_rgba(0,255,157,0.35)] transition-all duration-300 hover:shadow-[0_0_35px_rgba(0,255,157,0.6)] hover:scale-[1.01] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
+                  className="group relative flex flex-1 items-center justify-center gap-1.5 overflow-hidden rounded-lg bg-linear-to-r from-emerald-500 via-teal-500 to-cyan-500 px-4 py-2.5 text-xs font-mono font-bold text-black shadow-[0_0_25px_rgba(0,255,157,0.35)] transition-all duration-300 hover:shadow-[0_0_35px_rgba(0,255,157,0.6)] hover:scale-[1.01] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity" />
                   {executing ? (

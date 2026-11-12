@@ -19,7 +19,7 @@ const scenarios = [
     icon: Cpu,
     blastRadius: "Login & JWT session verification",
     accentGlow: "hover:border-amber-400/60 hover:shadow-[0_0_20px_rgba(255,184,0,0.25)]",
-    cardBorder: "border-amber-500/30 bg-gradient-to-b from-amber-950/20 to-black/70",
+    cardBorder: "border-amber-500/30 bg-linear-to-b from-amber-950/20 to-black/70",
     pillColor: "border-amber-400/40 bg-amber-500/15 text-amber-300 shadow-[0_0_8px_rgba(255,184,0,0.3)]",
     btnColor: "border-amber-500/40 bg-amber-500/10 text-amber-200 hover:bg-amber-500 hover:text-black shadow-[0_0_12px_rgba(255,184,0,0.2)]",
     iconColor: "text-amber-400",
@@ -32,7 +32,7 @@ const scenarios = [
     icon: Database,
     blastRadius: "Checkout pipeline & double-entry ledger",
     accentGlow: "hover:border-rose-400/60 hover:shadow-[0_0_20px_rgba(255,0,85,0.25)]",
-    cardBorder: "border-rose-500/30 bg-gradient-to-b from-rose-950/20 to-black/70",
+    cardBorder: "border-rose-500/30 bg-linear-to-b from-rose-950/20 to-black/70",
     pillColor: "border-rose-400/40 bg-rose-500/15 text-rose-300 shadow-[0_0_8px_rgba(255,0,85,0.3)]",
     btnColor: "border-rose-500/40 bg-rose-500/10 text-rose-200 hover:bg-rose-500 hover:text-white shadow-[0_0_12px_rgba(255,0,85,0.2)]",
     iconColor: "text-rose-400",
@@ -45,7 +45,7 @@ const scenarios = [
     icon: MemoryStick,
     blastRadius: "Catalog read queries cascading to DB",
     accentGlow: "hover:border-cyan-400/60 hover:shadow-[0_0_20px_rgba(0,240,255,0.25)]",
-    cardBorder: "border-cyan-500/30 bg-gradient-to-b from-cyan-950/20 to-black/70",
+    cardBorder: "border-cyan-500/30 bg-linear-to-b from-cyan-950/20 to-black/70",
     pillColor: "border-cyan-400/40 bg-cyan-500/15 text-cyan-300 shadow-[0_0_8px_rgba(0,240,255,0.3)]",
     btnColor: "border-cyan-500/40 bg-cyan-500/10 text-cyan-200 hover:bg-cyan-500 hover:text-black shadow-[0_0_12px_rgba(0,240,255,0.2)]",
     iconColor: "text-cyan-400",
@@ -88,7 +88,7 @@ export default function ChaosControls() {
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h3 className="text-xs font-black uppercase tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-white via-rose-100 to-rose-300 font-mono">
+              <h3 className="text-xs font-black uppercase tracking-wider text-transparent bg-clip-text bg-linear-to-r from-white via-rose-100 to-rose-300 font-mono">
                 Chaos Engineering Lab
               </h3>
               <span className="rounded border border-rose-500/40 bg-rose-500/15 px-1.5 py-0.2 text-[9px] font-mono font-bold text-rose-300 shadow-[0_0_8px_rgba(255,0,85,0.25)]">
@@ -162,7 +162,7 @@ export default function ChaosControls() {
       </div>
 
       {message && (
-        <div className="mt-3.5 flex items-center justify-between rounded-lg border border-rose-500/50 bg-gradient-to-r from-rose-950/60 to-black/60 px-3.5 py-2 text-xs text-rose-200 shadow-[0_0_15px_rgba(255,0,85,0.2)]">
+        <div className="mt-3.5 flex items-center justify-between rounded-lg border border-rose-500/50 bg-linear-to-r from-rose-950/60 to-black/60 px-3.5 py-2 text-xs text-rose-200 shadow-[0_0_15px_rgba(255,0,85,0.2)]">
           <div className="flex items-center gap-2">
             <CheckCircle2 size={14} className="text-rose-400 shrink-0" />
             <span className="font-mono text-[11px]">{message}</span>

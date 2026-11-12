@@ -32,10 +32,10 @@ function ServiceNode({
   const isWarning = status === "WARNING";
 
   const statusBorder = isCritical
-    ? "border-rose-500/60 bg-gradient-to-b from-rose-950/40 to-black/70 shadow-[0_0_20px_rgba(255,0,85,0.3)]"
+    ? "border-rose-500/60 bg-linear-to-b from-rose-950/40 to-black/70 shadow-[0_0_20px_rgba(255,0,85,0.3)]"
     : isWarning
-    ? "border-amber-500/50 bg-gradient-to-b from-amber-950/30 to-black/70 shadow-[0_0_15px_rgba(255,184,0,0.2)]"
-    : "border-cyan-500/25 bg-gradient-to-b from-cyan-950/20 to-black/60 hover:border-cyan-400/50 hover:shadow-[0_0_15px_rgba(0,240,255,0.15)]";
+    ? "border-amber-500/50 bg-linear-to-b from-amber-950/30 to-black/70 shadow-[0_0_15px_rgba(255,184,0,0.2)]"
+    : "border-cyan-500/25 bg-linear-to-b from-cyan-950/20 to-black/60 hover:border-cyan-400/50 hover:shadow-[0_0_15px_rgba(0,240,255,0.15)]";
 
   const StatusIcon = isCritical
     ? XCircle
@@ -116,7 +116,7 @@ export default function Topology() {
   const dbStatus = getDatabaseStatus();
 
   return (
-    <div className="relative overflow-hidden rounded-xl border border-cyan-500/25 bg-gradient-to-b from-[#060e22]/90 to-black/80 p-4.5 backdrop-blur-xl shadow-[0_4px_24px_-1px_rgba(0,0,0,0.6)]">
+    <div className="relative overflow-hidden rounded-xl border border-cyan-500/25 bg-linear-to-b from-[#060e22]/90 to-black/80 p-4.5 backdrop-blur-xl shadow-[0_4px_24px_-1px_rgba(0,0,0,0.6)]">
       <div className="mb-4 flex items-center justify-between">
         <div className="flex items-center gap-2.5">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-cyan-500/40 bg-cyan-500/15 text-cyan-400 shadow-[0_0_12px_rgba(0,240,255,0.3)]">
@@ -124,7 +124,7 @@ export default function Topology() {
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h3 className="text-xs font-black uppercase tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-white via-cyan-100 to-cyan-300 font-mono">
+              <h3 className="text-xs font-black uppercase tracking-wider text-transparent bg-clip-text bg-linear-to-r from-white via-cyan-100 to-cyan-300 font-mono">
                 Mesh Topology
               </h3>
               <span className="rounded border border-cyan-500/40 bg-cyan-950/40 px-1.5 py-0.2 text-[9px] font-mono font-bold text-cyan-300 shadow-[0_0_8px_rgba(0,240,255,0.2)]">
@@ -208,7 +208,7 @@ export default function Topology() {
           <div
             className={`flex items-center justify-between rounded-lg border p-3 transition-all ${
               dbStatus === "CRITICAL"
-                ? "border-rose-500/60 bg-gradient-to-r from-rose-950/40 to-black/70 shadow-[0_0_20px_rgba(255,0,85,0.3)]"
+                ? "border-rose-500/60 bg-linear-to-r from-rose-950/40 to-black/70 shadow-[0_0_20px_rgba(255,0,85,0.3)]"
                 : "border-cyan-500/25 bg-black/50"
             }`}
           >

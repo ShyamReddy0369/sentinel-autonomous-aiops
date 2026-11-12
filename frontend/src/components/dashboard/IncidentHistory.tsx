@@ -282,7 +282,7 @@ export default function IncidentHistory() {
   }, []);
 
   return (
-    <section className="rounded-xl border border-white/[0.06] bg-[#0d121c]/70 p-4.5 backdrop-blur-md">
+    <section className="rounded-xl border border-white/6 bg-[#0d121c]/70 p-4.5 backdrop-blur-md">
       <div className="mb-4 flex items-center justify-between">
         <div>
           <div className="flex items-center gap-2">
@@ -298,18 +298,18 @@ export default function IncidentHistory() {
           </p>
         </div>
 
-        <div className="flex items-center gap-1.5 rounded-full border border-white/[0.06] bg-black/40 px-2.5 py-0.5 text-[10px] font-mono text-slate-300">
+        <div className="flex items-center gap-1.5 rounded-full border border-white/6 bg-black/40 px-2.5 py-0.5 text-[10px] font-mono text-slate-300">
           <Clock size={11} />
           <span>{incidents.length} TOTAL INCIDENTS</span>
         </div>
       </div>
 
       {loading ? (
-        <div className="rounded-lg border border-white/[0.06] bg-black/40 p-6 text-center text-xs font-mono text-slate-400">
+        <div className="rounded-lg border border-white/6 bg-black/40 p-6 text-center text-xs font-mono text-slate-400">
           Loading incident history...
         </div>
       ) : incidents.length === 0 ? (
-        <div className="rounded-lg border border-dashed border-white/[0.08] bg-black/30 p-6 text-center text-xs font-mono text-slate-400">
+        <div className="rounded-lg border border-dashed border-white/8 bg-black/30 p-6 text-center text-xs font-mono text-slate-400">
           No historical incidents recorded.
         </div>
       ) : (
@@ -321,7 +321,7 @@ export default function IncidentHistory() {
             return (
               <div
                 key={incident.incident_id}
-                className="overflow-hidden rounded-lg border border-white/[0.06] bg-black/40 transition hover:border-white/[0.12]"
+                className="overflow-hidden rounded-lg border border-white/6 bg-black/40 transition hover:border-white/12"
               >
 
                 <button

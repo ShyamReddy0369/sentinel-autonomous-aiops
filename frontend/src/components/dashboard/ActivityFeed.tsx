@@ -31,7 +31,7 @@ export default function ActivityFeed() {
   const events = useActivity();
 
   return (
-    <section className="relative flex flex-col justify-between overflow-hidden rounded-xl border border-cyan-500/25 bg-gradient-to-b from-[#060e22]/90 to-black/80 p-4 backdrop-blur-xl shadow-[0_4px_24px_-1px_rgba(0,0,0,0.6)]">
+    <section className="relative flex flex-col justify-between overflow-hidden rounded-xl border border-cyan-500/25 bg-linear-to-b from-[#060e22]/90 to-black/80 p-4 backdrop-blur-xl shadow-[0_4px_24px_-1px_rgba(0,0,0,0.6)]">
       <div>
         <div className="mb-3.5 flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -39,7 +39,7 @@ export default function ActivityFeed() {
               <BrainCircuit size={14} />
             </div>
             <div>
-              <h4 className="text-xs font-black uppercase tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-white via-cyan-100 to-cyan-300 font-mono">
+              <h4 className="text-xs font-black uppercase tracking-wider text-transparent bg-clip-text bg-linear-to-r from-white via-cyan-100 to-cyan-300 font-mono">
                 Agent Activity Stream
               </h4>
               <p className="text-[11px] font-mono text-cyan-500/70">

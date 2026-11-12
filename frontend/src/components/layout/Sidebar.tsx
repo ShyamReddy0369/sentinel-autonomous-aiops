@@ -48,7 +48,7 @@ export default function Sidebar({
       <div>
         {/* Brand Header */}
         <div className="flex h-14 items-center gap-3 border-b border-cyan-500/20 px-5">
-          <div className="relative flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-cyan-400 via-blue-500 to-indigo-600 shadow-[0_0_18px_rgba(0,240,255,0.4)] border border-cyan-300/40">
+          <div className="relative flex h-8 w-8 items-center justify-center rounded-lg bg-linear-to-br from-cyan-400 via-blue-500 to-indigo-600 shadow-[0_0_18px_rgba(0,240,255,0.4)] border border-cyan-300/40">
             <Shield size={16} className="text-white drop-shadow-[0_0_6px_rgba(255,255,255,0.8)]" />
             <span className="absolute -right-0.5 -top-0.5 flex h-2.5 w-2.5">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-cyan-400 opacity-75" />
@@ -58,7 +58,7 @@ export default function Sidebar({
 
           <div>
             <div className="flex items-center gap-1.5">
-              <span className="font-extrabold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-white via-cyan-200 to-cyan-400 text-sm font-mono">
+              <span className="font-extrabold tracking-wider text-transparent bg-clip-text bg-linear-to-r from-white via-cyan-200 to-cyan-400 text-sm font-mono">
                 SENTINEL
               </span>
               <span className="rounded bg-cyan-500/10 px-1 py-0.2 text-[9px] font-mono font-bold text-cyan-300 border border-cyan-500/30 shadow-[0_0_8px_rgba(0,240,255,0.2)]">
@@ -128,7 +128,7 @@ export default function Sidebar({
 
       {/* Bottom Status Card */}
       <div className="border-t border-cyan-500/20 p-3">
-        <div className="rounded-lg border border-cyan-500/25 bg-gradient-to-b from-cyan-950/20 to-black/60 p-3 shadow-[0_0_15px_rgba(0,240,255,0.08)]">
+        <div className="rounded-lg border border-cyan-500/25 bg-linear-to-b from-cyan-950/20 to-black/60 p-3 shadow-[0_0_15px_rgba(0,240,255,0.08)]">
           <div className="flex items-center justify-between text-[11px]">
             <span className="font-medium text-cyan-200 flex items-center gap-1.5 font-mono">
               <Sparkles size={12} className="text-cyan-400 drop-shadow-[0_0_6px_rgba(0,240,255,0.8)]" />

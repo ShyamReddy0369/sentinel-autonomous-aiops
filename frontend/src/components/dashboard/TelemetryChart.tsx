@@ -76,13 +76,13 @@ export default function TelemetryChart() {
   const isCritical = currentCpu >= 90;
 
   return (
-    <section className="relative overflow-hidden rounded-xl border border-cyan-500/30 bg-gradient-to-b from-[#060e22]/95 via-[#040814]/90 to-black/90 p-5 backdrop-blur-2xl shadow-[0_8px_32px_-4px_rgba(0,0,0,0.8)]">
+    <section className="relative overflow-hidden rounded-xl border border-cyan-500/30 bg-linear-to-b from-[#060e22]/95 via-[#040814]/90 to-black/90 p-5 backdrop-blur-2xl shadow-[0_8px_32px_-4px_rgba(0,0,0,0.8)]">
       {/* Top neon laser hairline */}
       <div
-        className={`absolute inset-x-0 top-0 h-[2px] transition-all duration-500 ${
+        className={`absolute inset-x-0 top-0 h-0.5 transition-all duration-500 ${
           isCritical
-            ? "bg-gradient-to-r from-transparent via-rose-500 to-transparent shadow-[0_0_15px_#ff0055]"
-            : "bg-gradient-to-r from-transparent via-cyan-400 to-transparent shadow-[0_0_12px_#00f0ff]"
+            ? "bg-linear-to-r from-transparent via-rose-500 to-transparent shadow-[0_0_15px_#ff0055]"
+            : "bg-linear-to-r from-transparent via-cyan-400 to-transparent shadow-[0_0_12px_#00f0ff]"
         }`}
       />
 
@@ -105,7 +105,7 @@ export default function TelemetryChart() {
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h3 className="text-sm font-black uppercase tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-white via-cyan-100 to-cyan-300 font-mono">
+              <h3 className="text-sm font-black uppercase tracking-wider text-transparent bg-clip-text bg-linear-to-r from-white via-cyan-100 to-cyan-300 font-mono">
                 Real-Time Telemetry Stream & Load Spectrum
               </h3>
               <span className="flex items-center gap-1 rounded border border-cyan-500/40 bg-cyan-950/50 px-2 py-0.5 text-[10px] font-mono font-bold text-cyan-300 shadow-[0_0_8px_rgba(0,240,255,0.2)]">

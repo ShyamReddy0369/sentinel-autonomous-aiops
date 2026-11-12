@@ -6,7 +6,7 @@ export default function AIBrain() {
   const hasIncident = Boolean(diagnosis.root_cause && diagnosis.root_cause !== "None" && diagnosis.confidence > 0);
 
   return (
-    <div className="relative flex flex-col justify-between overflow-hidden rounded-xl border border-cyan-500/25 bg-gradient-to-b from-[#060e22]/90 to-black/80 p-4.5 backdrop-blur-xl shadow-[0_4px_24px_-1px_rgba(0,0,0,0.6)]">
+    <div className="relative flex flex-col justify-between overflow-hidden rounded-xl border border-cyan-500/25 bg-linear-to-b from-[#060e22]/90 to-black/80 p-4.5 backdrop-blur-xl shadow-[0_4px_24px_-1px_rgba(0,0,0,0.6)]">
       <div>
         <div className="mb-4 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
@@ -16,7 +16,7 @@ export default function AIBrain() {
 
             <div>
               <div className="flex items-center gap-2">
-                <h3 className="text-xs font-black uppercase tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-white via-purple-200 to-purple-400 font-mono">
+                <h3 className="text-xs font-black uppercase tracking-wider text-transparent bg-clip-text bg-linear-to-r from-white via-purple-200 to-purple-400 font-mono">
                   Sentinel AI Brain
                 </h3>
                 <span className="flex items-center gap-1 rounded border border-purple-500/40 bg-purple-950/40 px-1.5 py-0.2 text-[9px] font-mono font-bold text-purple-300 shadow-[0_0_8px_rgba(168,85,247,0.25)]">
@@ -68,7 +68,7 @@ export default function AIBrain() {
             </span>
 
             {hasIncident ? (
-              <div className="mt-1.5 flex items-start gap-2.5 rounded-lg border border-rose-500/50 bg-gradient-to-r from-rose-950/40 to-black/60 p-3 shadow-[0_0_15px_rgba(255,0,85,0.2)]">
+              <div className="mt-1.5 flex items-start gap-2.5 rounded-lg border border-rose-500/50 bg-linear-to-r from-rose-950/40 to-black/60 p-3 shadow-[0_0_15px_rgba(255,0,85,0.2)]">
                 <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-rose-400 drop-shadow-[0_0_6px_rgba(255,0,85,0.8)]" />
                 <p className="text-xs font-bold font-mono text-rose-200">
                   {diagnosis.root_cause}
@@ -95,7 +95,7 @@ export default function AIBrain() {
 
             <div className="mt-1.5 h-2 w-full overflow-hidden rounded-full bg-black/80 border border-cyan-500/30 shadow-[inset_0_0_8px_rgba(0,0,0,0.8)]">
               <div
-                className="h-full rounded-full bg-gradient-to-r from-cyan-400 via-indigo-500 to-emerald-400 shadow-[0_0_12px_rgba(0,240,255,0.8)] transition-all duration-500"
+                className="h-full rounded-full bg-linear-to-r from-cyan-400 via-indigo-500 to-emerald-400 shadow-[0_0_12px_rgba(0,240,255,0.8)] transition-all duration-500"
                 style={{ width: `${diagnosis.confidence}%` }}
               />
             </div>
