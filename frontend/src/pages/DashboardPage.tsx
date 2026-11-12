@@ -9,14 +9,21 @@ import IncidentFeed from "../components/dashboard/IncidentFeed";
 import ActivityFeed from "../components/dashboard/ActivityFeed";
 import AuditTimeline from "../components/dashboard/AuditTimeline";
 import useMetrics from "../hooks/useMetrics";
-import { Radio, FileText, Sparkles, Shield, AlertTriangle, Zap } from "lucide-react";
+import {
+  Radio,
+  FileText,
+  Sparkles,
+  Shield,
+  AlertTriangle,
+  Zap,
+} from "lucide-react";
 
 export default function DashboardPage() {
   const [activeTab, setActiveTab] = useState<"stream" | "audit">("stream");
   const { metrics } = useMetrics();
 
   const isCritical = Boolean(
-    metrics && (metrics.cpu >= 90 || metrics.incidents > 0)
+    metrics && (metrics.cpu >= 90 || metrics.incidents > 0),
   );
 
   return (
@@ -34,7 +41,8 @@ export default function DashboardPage() {
             </span>
           </div>
           <p className="mt-0.5 text-xs font-mono text-cyan-500/70 tracking-wide">
-            Autonomous multi-agent grid monitoring // Fault simulation // Sub-second self-healing
+            Autonomous multi-agent grid monitoring // Fault simulation //
+            Sub-second self-healing
           </p>
         </div>
 
@@ -72,7 +80,9 @@ export default function DashboardPage() {
                 CRITICAL INFRASTRUCTURE SATURATION DETECTED
               </p>
               <p className="text-[11px] font-mono text-rose-200/90 mt-0.5">
-                CPU utilization at {Math.round(metrics?.cpu ?? 95)}%. Sentinel AI SRE has formulated remediation. Operator authorization requested below.
+                CPU utilization at {Math.round(metrics?.cpu ?? 95)}%. Sentinel
+                AI SRE has formulated remediation. Operator authorization
+                requested below.
               </p>
             </div>
           </div>
@@ -109,7 +119,10 @@ export default function DashboardPage() {
       <section className="space-y-3">
         <div className="flex items-center justify-between border-b border-cyan-500/20 pb-2.5">
           <div className="flex items-center gap-2">
-            <Shield size={14} className="text-cyan-400 drop-shadow-[0_0_6px_rgba(0,240,255,0.8)]" />
+            <Shield
+              size={14}
+              className="text-cyan-400 drop-shadow-[0_0_6px_rgba(0,240,255,0.8)]"
+            />
             <h3 className="text-xs font-black uppercase tracking-wider text-transparent bg-clip-text bg-linear-to-r from-white to-cyan-300 font-mono">
               Operations & Event Streams
             </h3>
@@ -128,7 +141,12 @@ export default function DashboardPage() {
                   : "text-slate-400 hover:text-cyan-300"
               }`}
             >
-              <Radio size={12} className={activeTab === "stream" ? "animate-pulse text-cyan-400" : ""} />
+              <Radio
+                size={12}
+                className={
+                  activeTab === "stream" ? "animate-pulse text-cyan-400" : ""
+                }
+              />
               <span>Live Streams</span>
             </button>
 
@@ -140,7 +158,10 @@ export default function DashboardPage() {
                   : "text-slate-400 hover:text-purple-300"
               }`}
             >
-              <FileText size={12} className={activeTab === "audit" ? "text-purple-400" : ""} />
+              <FileText
+                size={12}
+                className={activeTab === "audit" ? "text-purple-400" : ""}
+              />
               <span>Audit Ledger</span>
             </button>
           </div>
