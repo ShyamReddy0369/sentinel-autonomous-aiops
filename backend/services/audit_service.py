@@ -1,23 +1,24 @@
-from datetime import datetime
+from datetime import datetime, timezone
+from typing import Any, Dict, List, Optional
 
 
 class AuditService:
 
-    def __init__(self):
-        self.events = []
+    def __init__(self) -> None:
+        self.events: List[Dict[str, Any]] = []
 
     def log(
         self,
         event_type: str,
-        incident_id: str | None = None,
-        service_name: str | None = None,
-        action: str | None = None,
-        details: str | None = None,
+        incident_id: Optional[str] = None,
+        service_name: Optional[str] = None,
+        action: Optional[str] = None,
+        details: Optional[str] = None,
         actor: str = "SYSTEM",
-    ):
+    ) -> Dict[str, Any]:
 
-        event = {
-            "timestamp": datetime.utcnow().isoformat(),
+        event: Dict[str, Any] = {
+            "timestamp": datetime.now(timezone.utc).isoformat(),
             "event_type": event_type,
             "incident_id": incident_id,
             "service_name": service_name,
@@ -36,20 +37,19 @@ class AuditService:
 
         return event
 
-    def get_all(self):
+    def get_all(self) -> List[Dict[str, Any]]:
         return list(reversed(self.events))
 
     def get_for_incident(
         self,
         incident_id: str,
-    ):
+    ) -> List[Dict[str, Any]]:
 
         return [
             event
             for event in self.events
-            if event["incident_id"]
-            == incident_id
+            if event.get("incident_id") == incident_id
         ]
 
 
-audit_service = AuditService()
+audit_service: AuditService = AuditService()

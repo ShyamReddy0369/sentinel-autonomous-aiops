@@ -1,3 +1,4 @@
+from datetime import datetime
 from flask import Blueprint, jsonify
 
 from backend.chaos_engine.simulator import get_metrics
@@ -11,7 +12,7 @@ def get_telemetry():
 
     return jsonify(
         {
-            "time": __import__("datetime").datetime.now().strftime("%H:%M:%S"),
+            "time": datetime.now().strftime("%H:%M:%S"),
             "cpu": metrics["cpu"],
             "memory": metrics["memory"],
         }

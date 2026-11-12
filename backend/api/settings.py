@@ -1,3 +1,4 @@
+from typing import Any, Dict
 from flask import Blueprint, jsonify, request
 
 
@@ -7,7 +8,7 @@ settings = Blueprint(
 )
 
 
-runtime_settings = {
+runtime_settings: Dict[str, Any] = {
     "ai_model": "llama-3.1-8b-instant",
     "confidence_threshold": 80,
     "autonomous_remediation": True,

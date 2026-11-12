@@ -1,3 +1,4 @@
+from typing import Any, Optional
 from flask import Blueprint, jsonify, request
 
 from backend.core.services import incident_service
@@ -9,7 +10,11 @@ events = Blueprint(
 )
 
 
-def determine_severity(event_type, status_code, error):
+def determine_severity(
+    event_type: Optional[str],
+    status_code: Optional[int],
+    error: Optional[str],
+) -> str:
 
     event_type = (event_type or "").upper()
     error = (error or "").lower()

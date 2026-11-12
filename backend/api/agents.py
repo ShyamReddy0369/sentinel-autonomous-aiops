@@ -1,3 +1,4 @@
+from typing import Any, Dict
 from flask import Blueprint, jsonify
 
 from backend.agents.diagnosis_agent import DiagnosisAgent
@@ -10,7 +11,7 @@ agents = Blueprint(
 )
 
 
-def check_agent(agent_class):
+def check_agent(agent_class: Any) -> Dict[str, Any]:
 
     try:
         agent_class()

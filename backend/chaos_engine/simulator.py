@@ -1,9 +1,10 @@
 import random
+from typing import Any, Dict
 
 from backend.core.services import incident_service
 
 
-services = {
+services: Dict[str, Dict[str, Any]] = {
     "Authentication": {
         "cpu": 35,
         "memory": 45,
@@ -25,22 +26,22 @@ services = {
 }
 
 
-def _keep_cpu_valid(value):
+def _keep_cpu_valid(value: float | int) -> int:
     return max(0, min(int(value), 100))
 
 
-def _keep_memory_valid(value):
+def _keep_memory_valid(value: float | int) -> int:
     return max(0, min(int(value), 100))
 
 
-def sync_anomalies_to_incidents():
+def sync_anomalies_to_incidents() -> None:
     """
     Autonomous Anomaly Monitor:
     Ensure any microservice experiencing critical resource saturation or marked unhealthy
     has an active open incident in incident_service so AI diagnosis and remediation can execute.
     """
     for service_name, service in services.items():
-        is_anomaly = (
+        is_anomaly: bool = (
             not service["healthy"]
             or service["cpu"] >= 90
             or service["memory"] >= 90
@@ -74,12 +75,12 @@ def sync_anomalies_to_incidents():
                 )
 
 
-def get_service_metrics():
+def get_service_metrics() -> Dict[str, Dict[str, Any]]:
 
     # Synchronize any critical resource spikes to active incidents
     sync_anomalies_to_incidents()
 
-    result = {}
+    result: Dict[str, Dict[str, Any]] = {}
 
     for name, service in services.items():
 
@@ -105,7 +106,7 @@ def get_service_metrics():
     return result
 
 
-def get_metrics():
+def get_metrics() -> Dict[str, Any]:
 
     service_metrics = get_service_metrics()
 
@@ -122,7 +123,7 @@ def get_metrics():
     }
 
 
-def trigger_failure(service_name):
+def trigger_failure(service_name: str) -> Dict[str, Any]:
 
     if service_name not in services:
 
@@ -192,7 +193,7 @@ def trigger_failure(service_name):
 def apply_remediation(
     service_name: str,
     action: str,
-):
+) -> Dict[str, Any]:
 
     if service_name not in services:
 

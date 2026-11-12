@@ -26,7 +26,7 @@ def get_audit_logs():
     "/audit/<incident_id>",
     methods=["GET"],
 )
-def get_incident_audit(incident_id):
+def get_incident_audit(incident_id: str):
 
     return jsonify(
         audit_service.get_for_incident(
