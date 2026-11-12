@@ -1,5 +1,4 @@
 import type { ReactNode } from "react";
-
 import Header from "../components/layout/Header";
 import Sidebar from "../components/layout/Sidebar";
 
@@ -15,7 +14,7 @@ export default function DashboardLayout({
   activePage,
 }: Props) {
   return (
-    <div className="flex h-screen overflow-hidden bg-[#07090e] text-slate-100">
+    <div className="flex h-screen overflow-hidden bg-[#02040a] text-slate-100 selection:bg-cyan-500/30 selection:text-cyan-200">
       <Sidebar
         onNavigate={onNavigate}
         activePage={activePage}
@@ -24,7 +23,7 @@ export default function DashboardLayout({
       <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
         <Header />
 
-        <main className="min-h-0 flex-1 overflow-y-auto bg-[#07090e] p-4 lg:p-6">
+        <main className="min-h-0 flex-1 overflow-y-auto cyber-grid p-4 lg:p-6">
           {children}
         </main>
       </div>
