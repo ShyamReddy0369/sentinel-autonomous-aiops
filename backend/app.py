@@ -49,22 +49,14 @@ def create_app() -> Flask:
 
     app.config["SECRET_KEY"] = os.getenv("FLASK_SECRET_KEY", "dev")
 
-    # Dynamic origins: support local dev + production Vercel/Railway/Render deployments
-    origins: List[str] = [
-        "http://localhost:5173",
-        "http://127.0.0.1:5173",
-        "http://localhost:3000",
-        "http://127.0.0.1:3000",
-    ]
-    if os.getenv("FRONTEND_URL"):
-        origins.append(os.environ["FRONTEND_URL"].rstrip("/"))
-
-    # Allow React frontend to communicate with Flask backend
+    # Allow React frontend (localhost, Vercel, Render) to communicate seamlessly with Flask backend
     CORS(
         app,
         resources={
-            r"/api/*": {
-                "origins": "*" if os.getenv("FLASK_ENV") == "production" else origins
+            r"/*": {
+                "origins": "*",
+                "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+                "allow_headers": ["Content-Type", "Authorization"],
             }
         },
     )
