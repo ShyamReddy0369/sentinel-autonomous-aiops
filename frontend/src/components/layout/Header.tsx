@@ -1,4 +1,4 @@
-import { ShieldCheck, Flame, Radio, RefreshCw } from "lucide-react";
+import { ShieldCheck, Flame, Radio, RefreshCw, Zap } from "lucide-react";
 import { useState } from "react";
 import api from "../../services/api";
 
@@ -20,14 +20,24 @@ export default function Header() {
   }
 
   return (
-    <header className="flex h-14 shrink-0 items-center justify-between border-b border-white/[0.06] bg-[#090d15]/80 px-6 backdrop-blur-md">
-      {/* Breadcrumb path */}
-      <div className="flex items-center gap-2 text-xs">
-        <span className="font-mono text-slate-400">sentinel</span>
-        <span className="text-slate-400">/</span>
-        <span className="font-mono text-slate-400">prod-us-east-1</span>
-        <span className="text-slate-400">/</span>
-        <span className="font-semibold text-white">mission-control</span>
+    <header className="relative flex h-14 shrink-0 items-center justify-between border-b border-cyan-500/20 bg-[#040814]/85 px-6 backdrop-blur-xl">
+      {/* Top micro neon laser line */}
+      <div className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-cyan-400/80 to-transparent shadow-[0_0_8px_rgba(0,240,255,0.8)]" />
+
+      {/* Cyber Breadcrumb path */}
+      <div className="flex items-center gap-2 text-xs font-mono">
+        <span className="flex items-center gap-1.5 text-cyan-400">
+          <Zap size={13} className="text-cyan-400 animate-pulse" />
+          <span className="font-bold tracking-wider">SENTINEL</span>
+        </span>
+        <span className="text-cyan-500/40">::</span>
+        <span className="text-slate-400">CLUSTER</span>
+        <span className="text-cyan-500/40">/</span>
+        <span className="text-slate-300">PROD-US-EAST</span>
+        <span className="text-cyan-500/40">/</span>
+        <span className="rounded bg-cyan-950/60 px-2 py-0.5 text-[10px] font-bold text-cyan-300 border border-cyan-500/30 shadow-[0_0_10px_rgba(0,240,255,0.15)]">
+          MISSION_CONTROL
+        </span>
       </div>
 
       {/* Global Status & Quick Trigger */}
@@ -36,31 +46,32 @@ export default function Header() {
         <button
           onClick={triggerQuickChaos}
           disabled={injecting}
-          className="group flex items-center gap-1.5 rounded-lg border border-rose-500/30 bg-rose-500/10 px-2.5 py-1 text-xs font-medium text-rose-300 transition hover:bg-rose-500/20 active:scale-95 disabled:opacity-50"
+          className="group relative flex items-center gap-1.5 overflow-hidden rounded-lg border border-rose-500/40 bg-gradient-to-r from-rose-950/40 to-red-900/30 px-3 py-1 text-xs font-medium text-rose-200 transition-all duration-200 hover:border-rose-400 hover:shadow-[0_0_18px_rgba(255,0,85,0.4)] active:scale-95 disabled:opacity-50"
           title="Quick fault injection for demo"
         >
+          <div className="absolute inset-0 bg-gradient-to-r from-rose-500/0 via-rose-500/10 to-rose-500/0 opacity-0 group-hover:opacity-100 transition-opacity" />
           {injecting ? (
             <RefreshCw size={12} className="animate-spin text-rose-400" />
           ) : (
-            <Flame size={12} className="text-rose-400 group-hover:scale-110 transition-transform" />
+            <Flame size={12} className="text-rose-400 group-hover:scale-125 transition-transform drop-shadow-[0_0_8px_rgba(255,0,85,0.8)]" />
           )}
-          <span className="font-mono text-[11px]">
-            {injecting ? "Injecting..." : "Simulate Outage"}
+          <span className="font-mono text-[11px] tracking-wide">
+            {injecting ? "INJECTING..." : "SIMULATE OUTAGE"}
           </span>
         </button>
 
-        <div className="h-4 w-px bg-white/[0.08]" />
+        <div className="h-4 w-px bg-cyan-500/20" />
 
         {/* Global Cluster Status Pill */}
-        <div className="flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-[11px] font-semibold text-emerald-400">
-          <Radio size={12} className="animate-pulse" />
-          <span>99.98% HEALTHY</span>
+        <div className="flex items-center gap-2 rounded-full border border-emerald-500/40 bg-emerald-950/40 px-3 py-1 text-[11px] font-mono font-semibold text-emerald-300 shadow-[0_0_15px_rgba(0,255,157,0.2)]">
+          <Radio size={12} className="animate-pulse text-emerald-400 drop-shadow-[0_0_6px_rgba(0,255,157,0.8)]" />
+          <span className="tracking-wide">99.98% HEALTHY</span>
         </div>
 
         {/* SRE Guardian Badge */}
-        <div className="hidden sm:flex items-center gap-1.5 rounded-lg border border-white/[0.06] bg-white/[0.03] px-2.5 py-1 text-[11px] text-slate-300">
-          <ShieldCheck size={13} className="text-cyan-400" />
-          <span className="font-mono text-[10px] text-slate-400">AUTONOMOUS</span>
+        <div className="hidden sm:flex items-center gap-1.5 rounded-lg border border-cyan-500/30 bg-cyan-950/30 px-2.5 py-1 text-[11px] text-cyan-300 shadow-[0_0_12px_rgba(0,240,255,0.15)]">
+          <ShieldCheck size={13} className="text-cyan-400 drop-shadow-[0_0_6px_rgba(0,240,255,0.8)]" />
+          <span className="font-mono text-[10px] tracking-wider text-cyan-200">AUTONOMOUS</span>
         </div>
       </div>
     </header>

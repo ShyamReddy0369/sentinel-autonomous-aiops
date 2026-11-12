@@ -49,20 +49,20 @@ Sentinel AI Ops decouples infrastructure telemetry, chaotic failure injection, i
 
 ```mermaid
 flowchart TD
-    subgraph Enterprise Infrastructure Tier
+    subgraph InfraTier["Enterprise Infrastructure Tier"]
         AUTH["🔐 Authentication Service<br/>(JWT / bcrypt / Token Bucket)"]
         PAY["💳 Payment Service<br/>(Stripe Gateway / 2PC Ledger)"]
         INV["📦 Inventory Service<br/>(Redis Cache / Atomic Locks)"]
     end
 
-    subgraph Chaos Engineering Engine
+    subgraph ChaosEngine["Chaos Engineering Engine"]
         SIM["⚡ Chaos Simulator<br/>- CPU Saturation<br/>- DB Lock Contention<br/>- Cache Miss Storm"]
         SIM -.->|Injects Failure| AUTH
         SIM -.->|Injects Failure| PAY
         SIM -.->|Injects Failure| INV
     end
 
-    subgraph Observability & Ingestion
+    subgraph ObsIngest["Observability & Ingestion"]
         TELEM["📊 Telemetry Daemon<br/>(CPU, Memory, RPS, P99 Latency, Errors)"]
         HEALTH["🩺 Health Evaluator<br/>(Dynamic Thresholds & Anomaly Sync)"]
         AUTH --> TELEM
@@ -71,7 +71,7 @@ flowchart TD
         TELEM --> HEALTH
     end
 
-    subgraph Multi-Agent AI SRE Swarm
+    subgraph Swarm["Multi-Agent AI SRE Swarm"]
         DIAG["🧠 Diagnosis Agent<br/>(Root Cause Isolation)"]
         GUARD["🛡️ Safety Guardrail Agent<br/>(Blast Radius & Risk Tiering)"]
         REM["🔧 Remediation Planner<br/>(Self-Healing Plan Formulation)"]
@@ -83,20 +83,24 @@ flowchart TD
         REM -->|Post-Recovery| POST
     end
 
-    subgraph Human-in-the-Loop & Execution
+    subgraph Governance["Human-in-the-Loop & Execution"]
         GATE{"⚖️ Risk Gate"}
         REM --> GATE
         GATE -->|Low Risk| AUTO["⚡ Auto-Execute Self-Healing"]
         GATE -->|High/Critical Risk| HITL["👤 Operator Approval Modal"]
         HITL -->|Operator Approved| AUTO
-        AUTO -.->|Apply Resolution| Enterprise Infrastructure Tier
+        AUTO -.->|Apply Resolution| AUTH
+        AUTO -.->|Apply Resolution| PAY
+        AUTO -.->|Apply Resolution| INV
     end
 
-    subgraph Mission Control Cockpit
+    subgraph Cockpit["Mission Control Cockpit"]
         UI["💻 React 19 + Tailwind v4 + Recharts UI<br/>(Dark-mode SRE Incident Cockpit)"]
-        UI <-->|REST Polling & SSE| FlaskAPI["🚀 Flask REST API<br/>(/api/v1/...)"]
-        FlaskAPI <--> Multi-Agent AI SRE Swarm
-        FlaskAPI <--> Observability & Ingestion
+        FlaskAPI["🚀 Flask REST API<br/>(/api/v1/...)"]
+        UI <-->|REST Polling & SSE| FlaskAPI
+        FlaskAPI <--> DIAG
+        FlaskAPI <--> REM
+        FlaskAPI <--> TELEM
     end
 ```
 

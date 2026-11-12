@@ -139,29 +139,26 @@ export default function SettingsPage() {
       <div className="flex flex-wrap items-end justify-between gap-4">
 
         <div>
-
-          <h1 className="text-4xl font-bold text-white">
-            Settings
-          </h1>
-
-          <p className="mt-2 text-slate-400">
-            Configure Sentinel AI operations and safety policies
+          <div className="flex items-center gap-2">
+            <h1 className="text-2xl font-black tracking-tight sm:text-3xl font-mono text-transparent bg-clip-text bg-gradient-to-r from-white via-cyan-100 to-cyan-400">
+              SETTINGS & POLICIES
+            </h1>
+            <span className="flex items-center gap-1 rounded border border-cyan-500/40 bg-cyan-950/50 px-2 py-0.5 text-[10px] font-mono font-bold text-cyan-300">
+              GOVERNANCE_CONFIG
+            </span>
+          </div>
+          <p className="mt-1 text-xs font-mono text-cyan-500/70">
+            Configure Sentinel AI operations, safety guardrail policies & risk thresholds
           </p>
-
         </div>
 
         <button
           onClick={saveSettings}
           disabled={saving}
-          className="flex items-center gap-2 rounded-xl bg-cyan-600 px-5 py-3 font-semibold text-white transition hover:bg-cyan-500 disabled:cursor-not-allowed disabled:opacity-50"
+          className="flex items-center gap-2 rounded-lg border border-cyan-500/40 bg-gradient-to-r from-cyan-500 to-blue-600 px-4 py-2 font-mono text-xs font-bold text-black shadow-[0_0_15px_rgba(0,240,255,0.3)] transition hover:shadow-[0_0_25px_rgba(0,240,255,0.5)] active:scale-95 disabled:cursor-not-allowed disabled:opacity-50"
         >
-
-          <Save size={18} />
-
-          {saving
-            ? "Saving..."
-            : "Save Settings"}
-
+          <Save size={15} />
+          {saving ? "SAVING..." : "SAVE CONFIGURATION"}
         </button>
 
       </div>

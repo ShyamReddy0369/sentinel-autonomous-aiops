@@ -11,9 +11,9 @@ export default function IncidentFeed() {
 
   if (loading) {
     return (
-      <div className="rounded-xl border border-white/[0.06] bg-[#0d121c]/70 p-4 backdrop-blur-md">
-        <h4 className="text-xs font-mono uppercase tracking-wider text-white">Live Incident Log</h4>
-        <p className="mt-2 text-xs font-mono text-slate-400">Loading active incident records...</p>
+      <div className="rounded-xl border border-cyan-500/25 bg-[#060e22]/80 p-4 backdrop-blur-xl">
+        <h4 className="text-xs font-mono font-bold uppercase tracking-wider text-cyan-300">Live Incident Log</h4>
+        <p className="mt-2 text-xs font-mono text-cyan-500/70">Connecting to incident datastore...</p>
       </div>
     );
   }
@@ -21,28 +21,28 @@ export default function IncidentFeed() {
   const activeCount = incidents.filter((i) => i.status !== "RESOLVED").length;
 
   return (
-    <div className="relative flex flex-col justify-between overflow-hidden rounded-xl border border-white/[0.06] bg-[#0d121c]/70 p-4 backdrop-blur-md">
+    <div className="relative flex flex-col justify-between overflow-hidden rounded-xl border border-cyan-500/25 bg-gradient-to-b from-[#060e22]/90 to-black/80 p-4 backdrop-blur-xl shadow-[0_4px_24px_-1px_rgba(0,0,0,0.6)]">
       <div>
         <div className="mb-3.5 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg border border-rose-500/30 bg-rose-500/10 text-rose-400">
+            <div className="flex h-7 w-7 items-center justify-center rounded-lg border border-rose-500/40 bg-rose-500/15 text-rose-400 shadow-[0_0_10px_rgba(255,0,85,0.3)]">
               <Flame size={14} />
             </div>
             <div>
-              <h4 className="text-xs font-bold uppercase tracking-wider text-white font-mono">
+              <h4 className="text-xs font-black uppercase tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-white via-rose-100 to-rose-300 font-mono">
                 Incident Stream
               </h4>
-              <p className="text-[11px] text-slate-400">
+              <p className="text-[11px] font-mono text-cyan-500/70">
                 Active alerts & anomalous service events
               </p>
             </div>
           </div>
 
           <span
-            className={`rounded px-2 py-0.5 text-[10px] font-mono font-semibold border ${
+            className={`rounded px-2 py-0.5 text-[10px] font-mono font-bold border ${
               activeCount > 0
-                ? "border-rose-500/30 bg-rose-500/10 text-rose-300 animate-pulse"
-                : "border-emerald-500/30 bg-emerald-500/10 text-emerald-400"
+                ? "border-rose-500/50 bg-rose-500/20 text-rose-300 shadow-[0_0_10px_rgba(255,0,85,0.4)] animate-pulse"
+                : "border-emerald-500/40 bg-emerald-500/20 text-emerald-300 shadow-[0_0_8px_rgba(0,255,157,0.3)]"
             }`}
           >
             {activeCount > 0 ? `${activeCount} UNRESOLVED` : "0 ACTIVE INCIDENTS"}
@@ -50,9 +50,9 @@ export default function IncidentFeed() {
         </div>
 
         {incidents.length === 0 ? (
-          <div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-white/[0.08] bg-black/30 py-6 text-center text-xs text-slate-400">
-            <CheckCircle2 className="mb-1.5 h-6 w-6 text-emerald-400/80" />
-            <span className="font-mono text-[11px]">All microservices nominal. Zero open incidents.</span>
+          <div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-cyan-500/25 bg-black/40 py-6 text-center text-xs text-slate-400">
+            <CheckCircle2 className="mb-1.5 h-6 w-6 text-emerald-400 drop-shadow-[0_0_6px_rgba(0,255,157,0.6)]" />
+            <span className="font-mono text-[11px] text-cyan-300/80">All microservices nominal. Zero open incidents.</span>
           </div>
         ) : (
           <div className="space-y-2 max-h-64 overflow-y-auto pr-1">
@@ -67,38 +67,38 @@ export default function IncidentFeed() {
                 : AlertTriangle;
 
               const badgeColor = isResolved
-                ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
+                ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/40 shadow-[0_0_8px_rgba(0,255,157,0.3)]"
                 : isCritical
-                ? "bg-rose-500/10 text-rose-400 border-rose-500/20"
-                : "bg-amber-500/10 text-amber-400 border-amber-500/20";
+                ? "bg-rose-500/20 text-rose-300 border-rose-500/40 shadow-[0_0_8px_rgba(255,0,85,0.3)] animate-pulse"
+                : "bg-amber-500/20 text-amber-300 border-amber-500/40 shadow-[0_0_8px_rgba(255,184,0,0.3)]";
 
               return (
                 <div
                   key={incident.incident_id}
-                  className="flex items-center justify-between gap-2.5 rounded-lg border border-white/[0.06] bg-black/40 p-2.5 transition hover:border-white/[0.12]"
+                  className="flex items-center justify-between gap-2.5 rounded-lg border border-cyan-500/20 bg-black/50 p-2.5 transition hover:border-cyan-400/40 hover:shadow-[0_0_12px_rgba(0,240,255,0.15)]"
                 >
                   <div className="flex items-start gap-2.5 min-w-0">
                     <Icon
                       size={16}
                       className={`mt-0.5 shrink-0 ${
                         isResolved
-                          ? "text-emerald-400"
+                          ? "text-emerald-400 drop-shadow-[0_0_6px_rgba(0,255,157,0.6)]"
                           : isCritical
-                          ? "text-rose-400"
+                          ? "text-rose-400 drop-shadow-[0_0_6px_rgba(255,0,85,0.8)]"
                           : "text-amber-400"
                       }`}
                     />
 
                     <div className="min-w-0">
                       <div className="flex items-center gap-2">
-                        <span className="font-semibold text-white text-xs">
+                        <span className="font-bold font-mono text-white text-xs">
                           {incident.service_name}
                         </span>
-                        <span className="font-mono text-[9px] text-slate-400">
-                          {incident.incident_id?.slice(0, 8)}
+                        <span className="font-mono text-[9px] text-cyan-400/70">
+                          #{incident.incident_id?.slice(0, 8)}
                         </span>
                       </div>
-                      <p className="mt-0.5 text-[11px] text-slate-400 truncate">
+                      <p className="mt-0.5 text-[11px] font-mono text-slate-300 truncate">
                         {incident.description}
                       </p>
                     </div>
@@ -110,7 +110,7 @@ export default function IncidentFeed() {
                     >
                       {incident.severity}
                     </span>
-                    <span className="text-[9px] text-slate-400">
+                    <span className="text-[9px] text-cyan-500/70 font-semibold">
                       {incident.status}
                     </span>
                   </div>
@@ -121,9 +121,9 @@ export default function IncidentFeed() {
         )}
       </div>
 
-      <div className="mt-3 flex items-center justify-between border-t border-white/[0.06] pt-2 text-[10px] font-mono text-slate-400">
-        <span>Sentinel Observability Pipeline</span>
-        <span>Auto-Sync Active</span>
+      <div className="mt-3 flex items-center justify-between border-t border-cyan-500/20 pt-2 text-[10px] font-mono text-cyan-500/60 font-semibold">
+        <span>OBSERVABILITY_STREAM</span>
+        <span>AUTO_SYNC: 1000MS</span>
       </div>
     </div>
   );
