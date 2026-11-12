@@ -1,4 +1,5 @@
 import os
+from typing import List
 from dotenv import load_dotenv
 from flask import Flask
 from flask_cors import CORS
@@ -19,7 +20,7 @@ from backend.core.services import incident_service
 load_dotenv()
 
 
-def seed_demo_data():
+def seed_demo_data() -> None:
     """Create initial demo incidents if none exist so dashboard is populated on boot."""
     if incident_service.get_all_incidents():
         return
@@ -43,22 +44,27 @@ def seed_demo_data():
     )
 
 
-def create_app():
+def create_app() -> Flask:
     app = Flask(__name__)
 
     app.config["SECRET_KEY"] = os.getenv("FLASK_SECRET_KEY", "dev")
+
+    # Dynamic origins: support local dev + production Vercel/Railway/Render deployments
+    origins: List[str] = [
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+    ]
+    if os.getenv("FRONTEND_URL"):
+        origins.append(os.environ["FRONTEND_URL"].rstrip("/"))
 
     # Allow React frontend to communicate with Flask backend
     CORS(
         app,
         resources={
             r"/api/*": {
-                "origins": [
-                    "http://localhost:5173",
-                    "http://127.0.0.1:5173",
-                    "http://localhost:3000",
-                    "http://127.0.0.1:3000",
-                ]
+                "origins": "*" if os.getenv("FLASK_ENV") == "production" else origins
             }
         },
     )
@@ -97,8 +103,9 @@ def create_app():
 app = create_app()
 
 if __name__ == "__main__":
+    port = int(os.getenv("PORT", "5000"))
     app.run(
-        host="127.0.0.1",
-        port=5000,
-        debug=True,
+        host="0.0.0.0",
+        port=port,
+        debug=os.getenv("FLASK_ENV") != "production",
     )

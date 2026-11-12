@@ -22,10 +22,12 @@ remediation = Blueprint(
 )
 
 
-remediation_cache = {}
+from typing import Any, Dict
+
+remediation_cache: Dict[str, Any] = {}
 
 
-def build_remediation(incident):
+def build_remediation(incident: Any) -> Dict[str, Any]:
 
     incident_id = incident.incident_id
 
