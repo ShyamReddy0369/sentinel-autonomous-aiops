@@ -121,7 +121,7 @@ export default function SettingsPage() {
 
   if (loading) {
     return (
-      <div className="flex min-h-[400px] items-center justify-center">
+      <div className="flex min-h-100 items-center justify-center">
 
         <div className="text-slate-400">
           Loading Sentinel settings...
@@ -140,7 +140,7 @@ export default function SettingsPage() {
 
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-black tracking-tight sm:text-3xl font-mono text-transparent bg-clip-text bg-gradient-to-r from-white via-cyan-100 to-cyan-400">
+            <h1 className="text-2xl font-black tracking-tight sm:text-3xl font-mono text-transparent bg-clip-text bg-linear-to-r from-white via-cyan-100 to-cyan-400">
               SETTINGS & POLICIES
             </h1>
             <span className="flex items-center gap-1 rounded border border-cyan-500/40 bg-cyan-950/50 px-2 py-0.5 text-[10px] font-mono font-bold text-cyan-300">
@@ -155,7 +155,7 @@ export default function SettingsPage() {
         <button
           onClick={saveSettings}
           disabled={saving}
-          className="flex items-center gap-2 rounded-lg border border-cyan-500/40 bg-gradient-to-r from-cyan-500 to-blue-600 px-4 py-2 font-mono text-xs font-bold text-black shadow-[0_0_15px_rgba(0,240,255,0.3)] transition hover:shadow-[0_0_25px_rgba(0,240,255,0.5)] active:scale-95 disabled:cursor-not-allowed disabled:opacity-50"
+          className="flex items-center gap-2 rounded-lg border border-cyan-500/40 bg-linear-to-r from-cyan-500 to-blue-600 px-4 py-2 font-mono text-xs font-bold text-black shadow-[0_0_15px_rgba(0,240,255,0.3)] transition hover:shadow-[0_0_25px_rgba(0,240,255,0.5)] active:scale-95 disabled:cursor-not-allowed disabled:opacity-50"
         >
           <Save size={15} />
           {saving ? "SAVING..." : "SAVE CONFIGURATION"}
@@ -173,7 +173,7 @@ export default function SettingsPage() {
 
       {/* AI Configuration */}
 
-      <section className="rounded-xl border border-white/[0.06] bg-[#0d121c]/70 p-4.5 backdrop-blur-md">
+      <section className="rounded-xl border border-white/6 bg-[#0d121c]/70 p-4.5 backdrop-blur-md">
 
         <div className="mb-6 flex items-center gap-3">
 
@@ -257,7 +257,7 @@ export default function SettingsPage() {
                 className="w-full"
               />
 
-              <span className="min-w-[45px] text-right font-bold text-cyan-400">
+              <span className="min-w-11.25 text-right font-bold text-cyan-400">
                 {settings.confidence_threshold}%
               </span>
 
@@ -271,7 +271,7 @@ export default function SettingsPage() {
 
       {/* Remediation */}
 
-      <section className="rounded-xl border border-white/[0.06] bg-[#0d121c]/70 p-4.5 backdrop-blur-md">
+      <section className="rounded-xl border border-white/6 bg-[#0d121c]/70 p-4.5 backdrop-blur-md">
 
         <div className="mb-6 flex items-center gap-3">
 
@@ -364,7 +364,7 @@ export default function SettingsPage() {
 
       {/* Safety */}
 
-      <section className="rounded-xl border border-white/[0.06] bg-[#0d121c]/70 p-4.5 backdrop-blur-md">
+      <section className="rounded-xl border border-white/6 bg-[#0d121c]/70 p-4.5 backdrop-blur-md">
 
         <div className="mb-6 flex items-center gap-3">
 
@@ -514,7 +514,7 @@ export default function SettingsPage() {
 
       {/* Telemetry */}
 
-      <section className="rounded-xl border border-white/[0.06] bg-[#0d121c]/70 p-4.5 backdrop-blur-md">
+      <section className="rounded-xl border border-white/6 bg-[#0d121c]/70 p-4.5 backdrop-blur-md">
 
         <div className="mb-6 flex items-center gap-3">
 

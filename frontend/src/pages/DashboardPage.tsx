@@ -25,7 +25,7 @@ export default function DashboardPage() {
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-black tracking-tight sm:text-3xl font-mono text-transparent bg-clip-text bg-gradient-to-r from-white via-cyan-100 to-cyan-400 drop-shadow-[0_0_15px_rgba(0,240,255,0.3)]">
+            <h1 className="text-2xl font-black tracking-tight sm:text-3xl font-mono text-transparent bg-clip-text bg-linear-to-r from-white via-cyan-100 to-cyan-400 drop-shadow-[0_0_15px_rgba(0,240,255,0.3)]">
               MISSION CONTROL
             </h1>
             <span className="flex items-center gap-1 rounded border border-cyan-500/40 bg-cyan-950/50 px-2 py-0.5 text-[10px] font-mono font-bold text-cyan-300 shadow-[0_0_12px_rgba(0,240,255,0.25)]">
@@ -60,8 +60,8 @@ export default function DashboardPage() {
 
       {/* Critical Anomaly Banner */}
       {isCritical && (
-        <div className="relative overflow-hidden flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-xl border border-rose-500/60 bg-gradient-to-r from-rose-950/80 via-red-950/50 to-rose-950/80 p-4 shadow-[0_0_30px_rgba(255,0,85,0.35)] backdrop-blur-xl">
-          <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-rose-500 to-transparent animate-pulse" />
+        <div className="relative overflow-hidden flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-xl border border-rose-500/60 bg-linear-to-r from-rose-950/80 via-red-950/50 to-rose-950/80 p-4 shadow-[0_0_30px_rgba(255,0,85,0.35)] backdrop-blur-xl">
+          <div className="absolute inset-x-0 top-0 h-0.5 bg-linear-to-r from-transparent via-rose-500 to-transparent animate-pulse" />
           <div className="flex items-start gap-3">
             <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-rose-500/60 bg-rose-500/20 text-rose-300 shadow-[0_0_15px_rgba(255,0,85,0.5)]">
               <AlertTriangle size={18} className="animate-bounce" />
@@ -110,7 +110,7 @@ export default function DashboardPage() {
         <div className="flex items-center justify-between border-b border-cyan-500/20 pb-2.5">
           <div className="flex items-center gap-2">
             <Shield size={14} className="text-cyan-400 drop-shadow-[0_0_6px_rgba(0,240,255,0.8)]" />
-            <h3 className="text-xs font-black uppercase tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-white to-cyan-300 font-mono">
+            <h3 className="text-xs font-black uppercase tracking-wider text-transparent bg-clip-text bg-linear-to-r from-white to-cyan-300 font-mono">
               Operations & Event Streams
             </h3>
             <span className="font-mono text-[10px] text-cyan-500/60 font-semibold">
