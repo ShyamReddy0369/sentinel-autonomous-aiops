@@ -3,6 +3,7 @@ from flask import Blueprint, jsonify
 
 from backend.agents.diagnosis_agent import DiagnosisAgent
 from backend.agents.remediation_agent import RemediationAgent
+from backend.agents.postmortem_agent import PostmortemAgent
 
 
 agents = Blueprint(
@@ -55,6 +56,10 @@ def get_agents():
         RemediationAgent
     )
 
+    postmortem = check_agent(
+        PostmortemAgent
+    )
+
     agent_list = [
         {
             "name": "Diagnosis Agent",
@@ -84,6 +89,15 @@ def get_agents():
             "error": None,
         },
         {
+            "name": "Postmortem Agent",
+            "status": postmortem["status"],
+            "description": (
+                "Synthesizes incident telemetry "
+                "into blameless RCA reports."
+            ),
+            "error": postmortem["error"],
+        },
+        {
             "name": "Telemetry Agent",
             "status": "ONLINE",
             "description": (
@@ -110,7 +124,7 @@ def get_agents():
     )
 
     return jsonify({
-        "total": 5,
+        "total": 6,
         "online": online,
         "agents": agent_list,
     })

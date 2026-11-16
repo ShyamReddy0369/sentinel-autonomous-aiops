@@ -1,4 +1,5 @@
 from backend.services.postmortem_service import postmortem_service
+from backend.agents.postmortem_agent import PostmortemAgent
 from backend.chaos_engine.incident_service import IncidentService
 
 
@@ -15,6 +16,23 @@ def test_postmortem_generation() -> None:
     assert report["incident_id"] == incident.incident_id
     assert report["service_name"] == "Payment Service"
     assert "markdown" in report
+    assert len(report["action_items"]) > 0
+
+
+def test_postmortem_agent_run() -> None:
+    agent = PostmortemAgent()
+    assert agent.name == "Postmortem Agent"
+
+    service = IncidentService()
+    incident = service.create_incident(
+        service_name="Authentication Service",
+        severity="CRITICAL",
+        description="CPU spike above 95%",
+    )
+    report = agent.run({"incident_id": incident.incident_id, "incident": incident})
+    assert report["incident_id"] == incident.incident_id
+    assert report["service_name"] == "Authentication Service"
+    assert "action_items" in report
     assert len(report["action_items"]) > 0
 
 
