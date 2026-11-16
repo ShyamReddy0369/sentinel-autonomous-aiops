@@ -123,15 +123,27 @@ def get_metrics() -> Dict[str, Any]:
     }
 
 
+def _resolve_service_name(name: str) -> str:
+    alias_map = {
+        "auth": "Authentication",
+        "authentication": "Authentication",
+        "payment": "Payment",
+        "payments": "Payment",
+        "inventory": "Inventory",
+    }
+    cleaned = name.strip()
+    return alias_map.get(cleaned.lower(), cleaned)
+
+
 def trigger_failure(service_name: str) -> Dict[str, Any]:
-
-    if service_name not in services:
-
+    canonical_name = _resolve_service_name(service_name)
+    if canonical_name not in services:
         return {
             "success": False,
             "message": f"Unknown service: {service_name}",
         }
 
+    service_name = canonical_name
     service = services[service_name]
 
     service["healthy"] = False
@@ -194,14 +206,14 @@ def apply_remediation(
     service_name: str,
     action: str,
 ) -> Dict[str, Any]:
-
-    if service_name not in services:
-
+    canonical_name = _resolve_service_name(service_name)
+    if canonical_name not in services:
         return {
             "success": False,
             "message": "Unknown service.",
         }
 
+    service_name = canonical_name
     service = services[service_name]
 
     print(
