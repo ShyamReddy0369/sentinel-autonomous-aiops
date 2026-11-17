@@ -45,33 +45,24 @@ function ServiceNode({
 
   return (
     <div
-      className={`relative flex flex-col justify-between rounded-lg border p-3.5 backdrop-blur-md transition-all duration-300 ${statusBorder}`}
+      className={`relative flex flex-col justify-between overflow-hidden rounded-lg border p-3 backdrop-blur-md transition-all duration-300 ${statusBorder}`}
     >
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div
-            className={`flex h-7 w-7 items-center justify-center rounded-md border ${
-              isCritical
-                ? "border-rose-500/50 bg-rose-500/20 text-rose-300 shadow-[0_0_10px_rgba(255,0,85,0.4)]"
-                : isWarning
-                ? "border-amber-500/50 bg-amber-500/20 text-amber-300 shadow-[0_0_10px_rgba(255,184,0,0.4)]"
-                : "border-cyan-500/40 bg-cyan-500/15 text-cyan-300 shadow-[0_0_10px_rgba(0,240,255,0.2)]"
-            }`}
-          >
-            <Icon size={14} />
-          </div>
-          <div>
-            <h4 className="text-xs font-bold font-mono text-white tracking-tight">
-              {name}
-            </h4>
-            <span className="font-mono text-[9px] text-cyan-400/70 font-semibold">
-              {category}
-            </span>
-          </div>
+      {/* Top Row: Icon on left, Status Badge on right */}
+      <div className="flex items-center justify-between gap-2">
+        <div
+          className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-md border ${
+            isCritical
+              ? "border-rose-500/50 bg-rose-500/20 text-rose-300 shadow-[0_0_10px_rgba(255,0,85,0.4)]"
+              : isWarning
+              ? "border-amber-500/50 bg-amber-500/20 text-amber-300 shadow-[0_0_10px_rgba(255,184,0,0.4)]"
+              : "border-cyan-500/40 bg-cyan-500/15 text-cyan-300 shadow-[0_0_10px_rgba(0,240,255,0.2)]"
+          }`}
+        >
+          <Icon size={14} />
         </div>
 
         <span
-          className={`flex items-center gap-1 rounded px-2 py-0.5 text-[9px] font-mono font-bold uppercase tracking-wider border ${
+          className={`flex shrink-0 items-center gap-1 rounded px-1.5 py-0.5 text-[9px] font-mono font-bold uppercase tracking-wider border ${
             isCritical
               ? "bg-rose-500/20 text-rose-300 border-rose-500/40 shadow-[0_0_8px_rgba(255,0,85,0.3)] animate-pulse"
               : isWarning
@@ -79,14 +70,38 @@ function ServiceNode({
               : "bg-emerald-500/20 text-emerald-300 border-emerald-500/40 shadow-[0_0_8px_rgba(0,255,157,0.3)]"
           }`}
         >
-          <StatusIcon size={9} />
-          {status}
+          <StatusIcon size={9} className="shrink-0" />
+          <span>{status}</span>
         </span>
       </div>
 
+      {/* Middle Row: Service Name & Category */}
+      <div className="mt-2 min-w-0">
+        <h4 className="truncate font-mono text-xs font-bold text-white tracking-tight">
+          {name}
+        </h4>
+        <p className="truncate font-mono text-[9px] font-semibold text-cyan-400/70">
+          {category}
+        </p>
+      </div>
+
+      {/* Bottom Row: Latency & RPS */}
       <div className="mt-2.5 flex items-center justify-between border-t border-cyan-500/20 pt-2 font-mono text-[10px]">
-        <span className="text-slate-400">Latency: <strong className={isCritical ? "text-rose-400 font-bold drop-shadow-[0_0_6px_rgba(255,0,85,0.8)]" : "text-cyan-300 font-semibold"}>{latency}</strong></span>
-        <span className="text-slate-400">RPS: <strong className="text-slate-200">{throughput}</strong></span>
+        <span className="text-slate-400">
+          Latency:{" "}
+          <strong
+            className={
+              isCritical
+                ? "font-bold text-rose-400 drop-shadow-[0_0_6px_rgba(255,0,85,0.8)]"
+                : "font-semibold text-cyan-300"
+            }
+          >
+            {latency}
+          </strong>
+        </span>
+        <span className="text-slate-400">
+          RPS: <strong className="text-slate-200">{throughput}</strong>
+        </span>
       </div>
     </div>
   );
@@ -146,26 +161,26 @@ export default function Topology() {
       <div className="flex flex-col items-center gap-2.5">
         {/* Tier 1: Gateway & Envoy */}
         <div className="grid w-full grid-cols-2 gap-2.5">
-          <div className="flex items-center justify-between rounded-lg border border-cyan-500/25 bg-black/50 p-2.5 text-xs shadow-[0_0_10px_rgba(0,240,255,0.05)]">
-            <div className="flex items-center gap-2">
-              <Globe size={15} className="text-cyan-400 drop-shadow-[0_0_6px_rgba(0,240,255,0.8)]" />
-              <div>
-                <p className="font-bold font-mono text-white text-[11px]">Cloudflare Edge</p>
-                <span className="font-mono text-[9px] text-cyan-500/70">Ingress Gateway</span>
+          <div className="flex items-center justify-between rounded-lg border border-cyan-500/25 bg-black/50 p-2.5 text-xs shadow-[0_0_10px_rgba(0,240,255,0.05)] overflow-hidden">
+            <div className="flex items-center gap-2 min-w-0">
+              <Globe size={15} className="text-cyan-400 drop-shadow-[0_0_6px_rgba(0,240,255,0.8)] shrink-0" />
+              <div className="min-w-0">
+                <p className="font-bold font-mono text-white text-[11px] truncate">Cloudflare Edge</p>
+                <span className="font-mono text-[9px] text-cyan-500/70 truncate block">Ingress Gateway</span>
               </div>
             </div>
-            <span className="font-mono text-[10px] text-emerald-400 font-bold drop-shadow-[0_0_6px_rgba(0,255,157,0.5)]">99.99%</span>
+            <span className="font-mono text-[10px] text-emerald-400 font-bold drop-shadow-[0_0_6px_rgba(0,255,157,0.5)] shrink-0 ml-1">99.99%</span>
           </div>
 
-          <div className="flex items-center justify-between rounded-lg border border-cyan-500/25 bg-black/50 p-2.5 text-xs shadow-[0_0_10px_rgba(0,240,255,0.05)]">
-            <div className="flex items-center gap-2">
-              <Activity size={15} className="text-purple-400 drop-shadow-[0_0_6px_rgba(168,85,247,0.8)]" />
-              <div>
-                <p className="font-bold font-mono text-white text-[11px]">Envoy Load Balancer</p>
-                <span className="font-mono text-[9px] text-purple-400/70">Round-Robin</span>
+          <div className="flex items-center justify-between rounded-lg border border-cyan-500/25 bg-black/50 p-2.5 text-xs shadow-[0_0_10px_rgba(0,240,255,0.05)] overflow-hidden">
+            <div className="flex items-center gap-2 min-w-0">
+              <Activity size={15} className="text-purple-400 drop-shadow-[0_0_6px_rgba(168,85,247,0.8)] shrink-0" />
+              <div className="min-w-0">
+                <p className="font-bold font-mono text-white text-[11px] truncate">Envoy Load Balancer</p>
+                <span className="font-mono text-[9px] text-purple-400/70 truncate block">Round-Robin</span>
               </div>
             </div>
-            <span className="font-mono text-[10px] text-cyan-300 font-bold">4.2k rps</span>
+            <span className="font-mono text-[10px] text-cyan-300 font-bold shrink-0 ml-1">4.2k rps</span>
           </div>
         </div>
 
@@ -212,9 +227,9 @@ export default function Topology() {
                 : "border-cyan-500/25 bg-black/50"
             }`}
           >
-            <div className="flex items-center gap-2.5">
+            <div className="flex items-center gap-2.5 min-w-0">
               <div
-                className={`flex h-7 w-7 items-center justify-center rounded-md border ${
+                className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-md border ${
                   dbStatus === "CRITICAL"
                     ? "border-rose-500/50 bg-rose-500/20 text-rose-300 shadow-[0_0_10px_rgba(255,0,85,0.4)]"
                     : "border-cyan-500/40 bg-cyan-500/15 text-cyan-300 shadow-[0_0_10px_rgba(0,240,255,0.2)]"
@@ -222,18 +237,18 @@ export default function Topology() {
               >
                 <Database size={15} />
               </div>
-              <div>
-                <h4 className="text-xs font-bold font-mono text-white tracking-tight">
+              <div className="min-w-0">
+                <h4 className="text-xs font-bold font-mono text-white tracking-tight truncate">
                   Relational Cluster (Multi-AZ)
                 </h4>
-                <p className="font-mono text-[9px] text-cyan-500/70">
+                <p className="font-mono text-[9px] text-cyan-500/70 truncate">
                   Primary Sharded Relational Store • Connection pool size: 64
                 </p>
               </div>
             </div>
 
             <span
-              className={`font-mono text-[10px] font-bold uppercase rounded px-2.5 py-0.5 border ${
+              className={`font-mono text-[10px] font-bold uppercase rounded px-2.5 py-0.5 border shrink-0 ${
                 dbStatus === "CRITICAL"
                   ? "bg-rose-500/20 text-rose-300 border-rose-500/40 shadow-[0_0_8px_rgba(255,0,85,0.3)] animate-pulse"
                   : "bg-emerald-500/20 text-emerald-300 border-emerald-500/40 shadow-[0_0_8px_rgba(0,255,157,0.3)]"
